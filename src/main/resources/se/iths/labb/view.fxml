@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckMenuItem?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
+<BorderPane minHeight="300.0" minWidth="350.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="450.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.iths.labb.Controller">
+    <top>
+        <VBox prefHeight="52.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                <MenuBar maxHeight="25.0" minHeight="25.0" prefHeight="25.0" prefWidth="550.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <Menu text="File">
+                        <CheckMenuItem fx:id="connectToServer" text="Connected to Server"/>
+                        <MenuItem fx:id="menuSave" onAction="#save" text="Save" />
+                        <SeparatorMenuItem/>
+                        <MenuItem onAction="#exit" text="Close" />
+                    </Menu>
+                    <Menu text="Edit">
+                        <MenuItem fx:id="menuUndo" onAction="#undoClicked" text="Undo" />
+                        <MenuItem fx:id="menuRedo" onAction="#redoClicked" text="Redo" />
+                    </Menu>
+                    <Menu text="View">
+                        <CheckMenuItem text="Show Toolbar"/>
+                        <CheckMenuItem text="Show undo"/>
+                        <CheckMenuItem text="Show redo"/>
+                        <CheckMenuItem text="Show Color-chart"/>
+                        <CheckMenuItem text="Show size"/>
+                        <CheckMenuItem text="Show shapes"/>
+                    </Menu>
+                    <Menu text="Command">
+                        <MenuItem disable="true" text="To change color, hold CTRL and click on specific shape" />
+                        <MenuItem disable="true" text="To change size, hold SHIFT and click on specific shape" />
+                    </Menu>
+                    <Menu text="Help">
+                        <MenuItem text="About"/>
+                    </Menu>
+                </MenuBar>
+                <Label fx:id="connectedToServer" alignment="CENTER" prefHeight="26.0" prefWidth="141.0"
+                       text="Connected to server" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                       AnchorPane.topAnchor="0.0">
+                    <graphic>
+                        <Separator orientation="VERTICAL" prefHeight="24.0"/>
+                    </graphic>
+                </Label>
+            </AnchorPane>
+            <ToolBar fx:id="toolBar" prefHeight="35.0" prefWidth="596.0">
+                <Spinner fx:id="sizeSpinner" amountToStepBy="2" editable="true" max="400" min="1" prefWidth="75.0" />
+                <ChoiceBox fx:id="shapeType" prefWidth="100.0" />
+                <ColorPicker fx:id="colorPicker" prefWidth="100.0" />
+                <Button onAction="#undoClicked" text="Undo">
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                </Button>
+                <Button onAction="#redoClicked" text="Redo">
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                </Button>
+            </ToolBar>
+        </VBox>
+    </top>
+    <center>
+        <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+            <Tab text="Untitled Tab 1">
+                <Canvas fx:id="paintingArea" height="800.0" onMouseClicked="#canvasClicked" width="1600.0"
+                        BorderPane.alignment="TOP_LEFT">
+                    <BorderPane.margin>
+                        <Insets/>
+                    </BorderPane.margin>
+                </Canvas>
+            </Tab>
+            <Tab text="Untitled Tab 2">
+                <Canvas fx:id="paintingArea2" height="800.0" onMouseClicked="#canvasClicked" width="1600.0" BorderPane.alignment="TOP_LEFT">
+                    <BorderPane.margin>
+                        <Insets />
+                    </BorderPane.margin>
+                </Canvas>
+            </Tab>
+        </TabPane>
+
+    </center>
+</BorderPane>

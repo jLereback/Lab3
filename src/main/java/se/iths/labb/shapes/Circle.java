@@ -1,0 +1,48 @@
+package se.iths.labb.shapes;
+
+import javafx.scene.canvas.GraphicsContext;
+
+import static se.iths.labb.shapes.ShapeType.*;
+
+public final class Circle extends Shape {
+    double radius = getSize() >> 1;
+    double radiusSq = radius * radius;
+    public Circle(ShapeParameter parameter) {
+        super(parameter);
+    }
+
+    @Override
+    public Shape getShapeDuplicate() {
+        return new Circle(getDuplicate());
+    }
+
+    @Override
+    public void draw(GraphicsContext context) {
+        context.setFill(getColor());
+        context.fillOval(getX() - radius, getY() - radius, getSize(), getSize());
+    }
+
+    @Override
+    public Boolean isInside(double posX, double posY) {
+        double distX = posX - getX();
+        double distY = posY - getY();
+
+        double distToCenter = (distX * distX) + (distY * distY);
+
+        return distToCenter <= radiusSq;
+    }
+
+    @Override
+    public ShapeType getType() {
+        return CIRCLE;
+    }
+
+    @Override
+    public String drawToSVGAsString() {
+        String convertColor = "#" + getColor().toString().substring(2, 10);
+        return "<circle cx=\"" + getX() + "\" " +
+                "cy=\"" + getY() + "\" " +
+                "r=\"" + radius + "\" " +
+                "fill=\"" + convertColor + "\" />";
+    }
+}
