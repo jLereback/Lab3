@@ -3,9 +3,11 @@ package se.iths.labb;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class MainApplication extends Application {
     @Override
@@ -16,8 +18,9 @@ public class MainApplication extends Application {
         Controller controller = fxmlLoader.getController();
         controller.setStage(stage);
 
-        stage.setTitle("Hello!");
+        stage.setTitle("Labb3 Julia Lerebäck Corell!");
         stage.setScene(scene);
+        stage.getIcons().add(new Image(Objects.requireNonNull(MainApplication.class.getResourceAsStream("JavaDuke.png"))));
         stage.show();
     }
 

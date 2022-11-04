@@ -27,7 +27,7 @@ public final class Circle extends Shape {
         double distX = posX - getX();
         double distY = posY - getY();
 
-        double distToCenter = (distX * distX) + (distY * distY);
+        double distToCenter = (Math.pow(distX + distY,2));
 
         return distToCenter <= radiusSq;
     }
@@ -39,10 +39,10 @@ public final class Circle extends Shape {
 
     @Override
     public String drawToSVGAsString() {
-        String convertColor = "#" + getColor().toString().substring(2, 10);
+        String convertColor = getColor().toString().substring(2, 10);
         return "<circle cx=\"" + getX() + "\" " +
                 "cy=\"" + getY() + "\" " +
                 "r=\"" + radius + "\" " +
-                "fill=\"" + convertColor + "\" />";
+                "fill=\"#" + convertColor + "\" />";
     }
 }

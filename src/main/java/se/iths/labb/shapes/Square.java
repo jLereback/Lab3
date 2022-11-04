@@ -5,6 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 import static se.iths.labb.shapes.ShapeType.*;
 
 public final class Square extends Shape {
+    double halfSideSize = getSize() >> 1;
     public Square(ShapeParameter parameter) {
         super(parameter);
     }
@@ -17,7 +18,7 @@ public final class Square extends Shape {
     @Override
     public void draw(GraphicsContext context) {
         context.setFill(getColor());
-        context.fillRect(getX() - getHalfSideSize(), getY() - getHalfSideSize(), getSize(), getSize());
+        context.fillRect(getX() - halfSideSize, getY() - halfSideSize, getSize(), getSize());
     }
 
     private double getHalfSideSize() {
@@ -29,7 +30,7 @@ public final class Square extends Shape {
         double distanceToX = Math.abs(posX - getX());
         double distanceToY = Math.abs(posY - getY());
 
-        return distanceToX <= getHalfSideSize() && distanceToY <= getHalfSideSize();
+        return distanceToX <= halfSideSize && distanceToY <= halfSideSize;
     }
 
     @Override
@@ -40,8 +41,8 @@ public final class Square extends Shape {
     @Override
     public String drawToSVGAsString() {
         String convertColor = getColor().toString().substring(2, 10);
-        return "<rect x=\"" + (getX() - getHalfSideSize()) + "\" " +
-                "y=\"" + (getY() - getHalfSideSize()) + "\" " +
+        return "<rect x=\"" + (getX() - halfSideSize) + "\" " +
+                "y=\"" + (getY() - halfSideSize) + "\" " +
                 "width=\"" + getSize() + "\" " +
                 "height=\"" + getSize() + "\" " +
                 "fill=\"#" + convertColor + "\" />";
