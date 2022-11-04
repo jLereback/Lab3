@@ -27,7 +27,7 @@
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                 <MenuBar maxHeight="25.0" minHeight="25.0" prefHeight="25.0" prefWidth="550.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <Menu text="File">
-                        <CheckMenuItem fx:id="connectToServer" text="Connected to Server"/>
+                        <CheckMenuItem fx:id="connectToServer" onAction="#connectToServer" text="Connected to Server"/>
                         <MenuItem fx:id="menuSave" onAction="#save" text="Save" />
                         <SeparatorMenuItem/>
                         <MenuItem onAction="#exit" text="Close" />
@@ -52,7 +52,7 @@
                         <MenuItem text="About"/>
                     </Menu>
                 </MenuBar>
-                <Label fx:id="connectedToServer" alignment="CENTER" prefHeight="26.0" prefWidth="141.0"
+                <Label fx:id="connectedLabel" alignment="CENTER" prefHeight="26.0" prefWidth="141.0"
                        text="Connected to server" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0"
                        AnchorPane.topAnchor="0.0">
                     <graphic>

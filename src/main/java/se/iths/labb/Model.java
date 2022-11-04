@@ -6,22 +6,27 @@ import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import se.iths.labb.shapes.Shape;
 import se.iths.labb.shapes.ShapeType;
+import se.iths.labb.svg.Server;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+import static se.iths.labb.svg.Server.getServer;
+
 public class Model {
-    ShapeType[] shapeNames;
+    private final BooleanProperty serverConnected;
     private final ObservableList<ShapeType> choiceBoxShapeList;
     private final Deque<Deque<Shape>> undoDeque;
     private final Deque<Deque<Shape>> redoDeque;
-    public ObservableList<Shape> shapeList;
+    private final ObservableList<Shape> shapeList;
     private final ObjectProperty<Integer> size;
     private final ObjectProperty<Color> color;
-    public final ObjectProperty<ShapeType> shapeType;
+    private final ObjectProperty<ShapeType> shapeType;
+
 
     public Model() {
-        this.shapeNames = ShapeType.values();
+
+        this.serverConnected = new SimpleBooleanProperty();
         this.choiceBoxShapeList = FXCollections.observableArrayList(ShapeType.values());
         this.shapeList = FXCollections.observableArrayList();
         this.undoDeque = new ArrayDeque<>();
@@ -31,19 +36,6 @@ public class Model {
         this.shapeType = new SimpleObjectProperty<>(ShapeType.CIRCLE);
     }
 
-    private final BooleanProperty connected = new SimpleBooleanProperty();
-
-    public boolean isConnected() {
-        return connected.get();
-    }
-
-    public BooleanProperty connectedProperty() {
-        return connected;
-    }
-
-    public void setConnected(boolean connected) {
-        this.connected.set(connected);
-    }
     public ObjectProperty<ShapeType> shapeTypeProperty() {
         return shapeType;
     }
@@ -119,5 +111,33 @@ public class Model {
 
     public void addToRedoDeque() {
         redoDeque.addLast(getTempList());
+    }
+
+    public void sendToList(Shape shape) {
+        if (isServerConnected())
+            getServer().addShapeToServer(shape);
+        else
+            addShapeToList(shape);
+    }
+
+    public void addShapeToList(Shape shape) {
+        shapeList.add(shape);
+    }
+
+    public BooleanProperty serverConnectedProperty() {
+        return serverConnected;
+    }
+
+    public boolean isServerConnected() {
+        return serverConnected.get();
+    }
+
+    public void setServerConnected(boolean serverConnected) {
+        this.serverConnected.set(serverConnected);
+    }
+
+    public void connectToServer() {
+        getServer().connectToServer();
+
     }
 }

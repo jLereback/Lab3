@@ -1,6 +1,5 @@
 package se.iths.labb;
 
-import javafx.event.ActionEvent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
@@ -11,7 +10,6 @@ import se.iths.labb.shapes.Shape;
 import se.iths.labb.shapes.ShapeFactory;
 import se.iths.labb.shapes.ShapeParameter;
 import se.iths.labb.shapes.ShapeType;
-import se.iths.labb.svg.SVGWriter.*;
 
 import java.util.Optional;
 
@@ -26,14 +24,12 @@ public class Controller {
     public static final int MAX_WIDTH = 2000;
     public static final int MAX_HEIGHT = 1000;
     public static final Color BACKGROUND_COLOR = Color.web("#edece0");
-    public Label connectedToServer;
-    public CheckMenuItem connectToServer;
-    public Canvas paintingArea2;
-
     Model model = new Model();
     ShapeFactory shapeFactory = new ShapeFactory();
-    //SVGWriter svgWriter = new SVGWriter();
-    ShapeParameter shapeParameter;
+    public Label connectedLabel;
+    public CheckMenuItem connectToServer;
+    public Canvas paintingArea2;
+    public ShapeParameter shapeParameter;
     public GraphicsContext context;
     public Spinner<Integer> sizeSpinner;
     public ChoiceBox<ShapeType> shapeType;
@@ -46,10 +42,10 @@ public class Controller {
 
 
     public void initialize() {
-        connectToServer.selectedProperty().bindBidirectional(model.connectedProperty());
-        connectedToServer.visibleProperty().bind(model.connectedProperty());
-
         context = paintingArea.getGraphicsContext2D();
+
+        connectToServer.selectedProperty().bindBidirectional(model.serverConnectedProperty());
+        connectedLabel.visibleProperty().bind(model.serverConnectedProperty());
 
         colorPicker.valueProperty().bindBidirectional(model.colorProperty());
 
@@ -84,7 +80,7 @@ public class Controller {
         createNewShapeParameter(mouseEvent.getX(), mouseEvent.getY());
 
         model.addToUndoDeque();
-        model.getShapeList().add(shapeFactory.getShape(model.getShapeType(), shapeParameter));
+        model.sendToList(shapeFactory.getShape(model.getShapeType(), shapeParameter));
     }
 
     private void createNewShapeParameter(double posX, double posY) {
@@ -144,6 +140,10 @@ public class Controller {
 
     public void save() {
         getSVGWriter().save(model, stage);
+    }
+    public void connectToServer() {
+        if (connectToServer.isSelected())
+            model.connectToServer();
     }
 
     public void exit() {

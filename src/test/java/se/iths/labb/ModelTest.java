@@ -28,11 +28,11 @@ class ModelTest {
 
     private void prepareShapeListAndUndoDeque() {
         model.addToUndoDeque();
-        model.shapeList.add(mediumCircle);
+        model.getShapeList().add(mediumCircle);
         model.addToUndoDeque();
-        model.shapeList.add(smallSquare);
+        model.getShapeList().add(smallSquare);
         model.addToUndoDeque();
-        model.shapeList.add(bigCircle);
+        model.getShapeList().add(bigCircle);
     }
 
     @Test
