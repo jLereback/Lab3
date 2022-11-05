@@ -14,6 +14,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class Server {
     private Model model;
@@ -35,36 +36,40 @@ public class Server {
 
     public void connect(Model model) {
         this.model = model;
+        if (!model.isServerConnected())
+            return;
         connectToServer();
     }
 
     public void disconnect() {
         try {
             terminateServer();
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | IOException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    private void terminateServer() throws InterruptedException {
-        socket.remove();
+    private void terminateServer() throws InterruptedException, IOException {
+        if (executorService.awaitTermination(100, TimeUnit.MILLISECONDS))
+            executorService.shutdown();
+        writer.close();
         model.setServerConnected(false);
-        System.out.print("Disconnected from Server");
+        System.out.println("Disconnected from Server");
     }
 
     public void connectToServer() {
         try {
             initServer();
-            System.out.print("Connected to Server");
-            executorService.submit(this::clientHandler);
+            System.out.println("Connected to Server");
+            executorService.submit(this::handleClient);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
 
     private void initServer() throws IOException {
-
         connected.bindBidirectional(model.serverConnectedProperty());
+
         socket.set(new Socket("127.0.0.1", 8000));
         writer = new PrintWriter(socket.get().getOutputStream(), true);
         reader = new BufferedReader(new InputStreamReader(socket.get().getInputStream()));
@@ -72,7 +77,7 @@ public class Server {
         model.setServerConnected(true);
     }
 
-    private void clientHandler() {
+    private void handleClient() {
         try {
             while (model.isServerConnected()) {
                 readFromServer();
@@ -86,17 +91,15 @@ public class Server {
         String line = reader.readLine();
         if (line == null || line.contains("joined") || line.contains("left"))
             return;
-        Platform.runLater(() -> model.addShapeToList(shapeFactory.convertSVGToShape(line)));
+        System.out.println(line);
+        Platform.runLater(() -> model.addShapeToList(shapeFactory.convertStringToShape(line)));
     }
 
     public void addShapeToServer(Shape shape) {
-        if (model.isServerConnected())
-            try {
-                writer.println(shape.toString());
-            } catch (NullPointerException e) {
-                System.out.println(e.getMessage());
-            }
-        else
-            model.addShapeToList(shape);
+        try {
+            writer.println(shape.toString());
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

@@ -8,18 +8,19 @@ import se.iths.labb.shapes.Shape;
 import se.iths.labb.shapes.ShapeType;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
 
 import static se.iths.labb.shapes.ShapeType.*;
-import static se.iths.labb.svg.Server.getServer;
+import static se.iths.labb.svg.Server.*;
+
+import se.iths.labb.svg.Server.*;
 
 public class Model {
     private final BooleanProperty serverConnected;
     private final ObservableList<ShapeType> choiceBoxShapeList;
     private final Deque<Deque<Shape>> undoDeque;
     private final Deque<Deque<Shape>> redoDeque;
-    private ObservableList<Shape> shapeList;
+    private final ObservableList<Shape> shapeList;
     private final ObjectProperty<Double> size;
     private final ObjectProperty<Color> color;
     private final ObjectProperty<ShapeType> shapeType;

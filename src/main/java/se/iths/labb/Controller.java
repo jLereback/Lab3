@@ -18,19 +18,21 @@ import static javafx.scene.input.KeyCombination.*;
 import static se.iths.labb.svg.SVGWriter.getSVGWriter;
 
 public class Controller {
-    final static KeyCombination SAVE = new KeyCodeCombination(KeyCode.S, CONTROL_DOWN);
-    final static KeyCombination UNDO = new KeyCodeCombination(KeyCode.Z, CONTROL_DOWN);
-    final static KeyCombination REDO = new KeyCodeCombination(KeyCode.Y, CONTROL_DOWN);
+    static final KeyCombination SAVE = new KeyCodeCombination(KeyCode.S, CONTROL_DOWN);
+    static final KeyCombination UNDO = new KeyCodeCombination(KeyCode.Z, CONTROL_DOWN);
+    static final KeyCombination REDO = new KeyCodeCombination(KeyCode.Y, CONTROL_DOWN);
+    static final Color BACKGROUND_COLOR = Color.web("#edece0");
+    static final int MAX_WIDTH = 2000;
+    static final int MAX_HEIGHT = 1000;
 
-    public static final int MAX_WIDTH = 2000;
-    public static final int MAX_HEIGHT = 1000;
-    public static final Color BACKGROUND_COLOR = Color.web("#edece0");
     Model model = new Model();
     ShapeFactory shapeFactory = new ShapeFactory();
+    public GraphicsContext context;
+    public ShapeParameter shapeParameter;
+    public Button undoButton;
+    public Button redoButton;
     public Label connectedLabel;
     public CheckMenuItem connectToServer;
-    public ShapeParameter shapeParameter;
-    public GraphicsContext context;
     public Spinner<Double> sizeSpinner;
     public ChoiceBox<ShapeType> shapeType;
     public ColorPicker colorPicker;
@@ -41,8 +43,6 @@ public class Controller {
     private Stage stage;
 
     public void initialize() {
-
-
         context = paintingArea.getGraphicsContext2D();
 
         connectToServer.selectedProperty().bindBidirectional(model.serverConnectedProperty());

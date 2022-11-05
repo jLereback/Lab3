@@ -15,7 +15,7 @@ public class ShapeFactory {
         };
     }
 
-    public Shape convertSVGToShape(String line) {
+    public Shape convertStringToShape(String line) {
         try {
             Pattern pattern = Pattern.compile("=");
 
