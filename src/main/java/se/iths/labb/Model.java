@@ -13,10 +13,10 @@ import java.util.Deque;
 import static se.iths.labb.shapes.ShapeType.*;
 import static se.iths.labb.svg.Server.*;
 
-import se.iths.labb.svg.Server.*;
-
 public class Model {
     private final BooleanProperty serverConnected;
+    private final BooleanProperty undoVisible;
+    private final BooleanProperty redoVisible;
     private final ObservableList<ShapeType> choiceBoxShapeList;
     private final Deque<Deque<Shape>> undoDeque;
     private final Deque<Deque<Shape>> redoDeque;
@@ -29,6 +29,8 @@ public class Model {
     public Model() {
 
         this.serverConnected = new SimpleBooleanProperty();
+        this.undoVisible = new SimpleBooleanProperty(true);
+        this.redoVisible = new SimpleBooleanProperty(true);
         this.choiceBoxShapeList = FXCollections.observableArrayList(ShapeType.values());
         this.shapeList = FXCollections.observableArrayList();
         this.undoDeque = new ArrayDeque<>();
@@ -64,6 +66,30 @@ public class Model {
 
     public Color getColor() {
         return color.get();
+    }
+
+    public boolean isUndoVisible() {
+        return undoVisible.get();
+    }
+
+    public BooleanProperty undoVisibleProperty() {
+        return undoVisible;
+    }
+
+    public void setUndoVisible(boolean undoVisible) {
+        this.undoVisible.set(undoVisible);
+    }
+
+    public boolean isRedoVisible() {
+        return redoVisible.get();
+    }
+
+    public BooleanProperty redoVisibleProperty() {
+        return redoVisible;
+    }
+
+    public void setRedoVisible(boolean redoVisible) {
+        this.redoVisible.set(redoVisible);
     }
 
     public ObservableList<ShapeType> getChoiceBoxShapeList() {

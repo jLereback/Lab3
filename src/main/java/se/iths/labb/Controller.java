@@ -29,6 +29,8 @@ public class Controller {
     ShapeFactory shapeFactory = new ShapeFactory();
     public GraphicsContext context;
     public ShapeParameter shapeParameter;
+    public CheckMenuItem viewUndo;
+    public CheckMenuItem viewRedo;
     public Button undoButton;
     public Button redoButton;
     public Label connectedLabel;
@@ -47,6 +49,13 @@ public class Controller {
 
         connectToServer.selectedProperty().bindBidirectional(model.serverConnectedProperty());
         connectedLabel.visibleProperty().bind(model.serverConnectedProperty());
+
+        viewUndo.selectedProperty().bindBidirectional(model.undoVisibleProperty());
+        undoButton.visibleProperty().bind(model.undoVisibleProperty());
+
+        viewRedo.selectedProperty().bindBidirectional(model.redoVisibleProperty());
+        redoButton.visibleProperty().bind(model.redoVisibleProperty());
+
 
         colorPicker.valueProperty().bindBidirectional(model.colorProperty());
 
