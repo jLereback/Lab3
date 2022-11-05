@@ -4,7 +4,7 @@ import javafx.scene.paint.Color;
 
 import java.util.Objects;
 
-public record ShapeParameter(double posX, double posY, int size, Color color) {
+public record ShapeParameter(double posX, double posY, double size, Color color) {
 
     @Override
     public boolean equals(Object obj) {

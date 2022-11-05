@@ -6,9 +6,8 @@ import javafx.scene.paint.Color;
 public abstract class Shape {
     private double posX;
     private double posY;
-    private int size;
+    private double size;
     private Color color;
-
     public Shape(ShapeParameter parameter) {
         this.posX = parameter.posX();
         this.posY = parameter.posY();
@@ -32,11 +31,11 @@ public abstract class Shape {
         return posY;
     }
 
-    public int getSize() {
+    public double getSize() {
         return size;
     }
 
-    public void setSize(int size) {
+    public void setSize(double size) {
         double diffSize = this.size-size;
 
         setPosX(getPosX() + diffSize/2);
@@ -68,7 +67,8 @@ public abstract class Shape {
         this.posY = posY;
     }
 
-    public void updateShape(Color color, int size){
+
+    public void updateShape(Color color, double size){
         setColor(color);
         setSize(size);
     }

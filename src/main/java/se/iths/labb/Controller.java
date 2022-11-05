@@ -1,5 +1,6 @@
 package se.iths.labb;
 
+import javafx.collections.ListChangeListener;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
@@ -28,10 +29,9 @@ public class Controller {
     ShapeFactory shapeFactory = new ShapeFactory();
     public Label connectedLabel;
     public CheckMenuItem connectToServer;
-    public Canvas paintingArea2;
     public ShapeParameter shapeParameter;
     public GraphicsContext context;
-    public Spinner<Integer> sizeSpinner;
+    public Spinner<Double> sizeSpinner;
     public ChoiceBox<ShapeType> shapeType;
     public ColorPicker colorPicker;
     public Canvas paintingArea;
@@ -40,8 +40,11 @@ public class Controller {
     public MenuItem menuRedo;
     private Stage stage;
 
-
     public void initialize() {
+
+
+
+
         context = paintingArea.getGraphicsContext2D();
 
         connectToServer.selectedProperty().bindBidirectional(model.serverConnectedProperty());
@@ -53,6 +56,8 @@ public class Controller {
         shapeType.setItems(model.getChoiceBoxShapeList());
 
         sizeSpinner.getValueFactory().valueProperty().bindBidirectional(model.sizeProperty());
+
+        model.getShapeList().addListener((ListChangeListener<Shape>) onChange -> draw());
 
         menuRedo.setAccelerator(REDO);
         menuUndo.setAccelerator(UNDO);
@@ -69,9 +74,8 @@ public class Controller {
             updateColor(mouseEvent);
         else if (mouseEvent.isShiftDown())
             updateSize(mouseEvent);
-        else {
+        else
             createNewShape(mouseEvent);
-        }
         model.getRedoDeque().clear();
         draw();
     }
@@ -144,6 +148,8 @@ public class Controller {
     public void connectToServer() {
         if (connectToServer.isSelected())
             model.connectToServer();
+        else
+            model.disconnectFromServer();
     }
 
     public void exit() {

@@ -5,8 +5,9 @@ import javafx.scene.canvas.GraphicsContext;
 import static se.iths.labb.shapes.ShapeType.*;
 
 public final class Circle extends Shape {
-    double radius = getSize() >> 1;
+    double radius = getSize()/2;
     double radiusSq = radius * radius;
+    String colorAsString = getColor().toString().substring(2, 10);
     public Circle(ShapeParameter parameter) {
         super(parameter);
     }
@@ -39,10 +40,9 @@ public final class Circle extends Shape {
 
     @Override
     public String drawToSVGAsString() {
-        String convertColor = getColor().toString().substring(2, 10);
         return "<circle cx=\"" + getX() + "\" " +
                 "cy=\"" + getY() + "\" " +
                 "r=\"" + radius + "\" " +
-                "fill=\"#" + convertColor + "\" />";
+                "fill=\"#" + colorAsString + "\" />";
     }
 }

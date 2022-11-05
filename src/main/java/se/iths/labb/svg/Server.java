@@ -2,103 +2,109 @@ package se.iths.labb.svg;
 
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.scene.paint.Color;
+import javafx.concurrent.Task;
+import javafx.scene.control.ProgressBar;
 import se.iths.labb.Model;
-import se.iths.labb.shapes.Shape;
+import se.iths.labb.shapes.*;
 import se.iths.labb.shapes.ShapeFactory;
-import se.iths.labb.shapes.ShapeParameter;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.*;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.regex.Pattern;
-
-import static se.iths.labb.shapes.ShapeType.*;
+import java.util.concurrent.TimeUnit;
 
 public class Server {
-    private final Model model;
+    private static final double EPSILON = 0.0000005;
+
+    private Model model;
     private final ShapeFactory shapeFactory;
+    private final ThreadLocal<Socket> socket = new ThreadLocal<>();
     private PrintWriter writer;
     private BufferedReader reader;
-    private final BooleanProperty connected;
-
-    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private final BooleanProperty connected = new SimpleBooleanProperty(false);
     private static final Server server = new Server();
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+
     public static Server getServer() {
         return server;
     }
 
-    public Server(){
-        this.model = new Model();
+    public Server() {
         this.shapeFactory = new ShapeFactory();
-        this.connected = new SimpleBooleanProperty();
+    }
+
+
+    public void connect(Model model) {
+        this.model = model;
+        connectToServer();
+    }
+
+    public void disconnect() {
+        try {
+            terminateServer();
+        } catch (InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void terminateServer() throws InterruptedException {
+        socket.remove();
+        model.setServerConnected(false);
+        System.out.print("Disconnected from Server");
     }
 
     public void connectToServer() {
-        connected.bindBidirectional(model.serverConnectedProperty());
         try {
-            InputStream input;
-            try (Socket socket = new Socket("127.0.0.1", 8000)) {
-                writer = new PrintWriter(socket.getOutputStream(), true);
-                input = socket.getInputStream();
-            }
-            reader = new BufferedReader(new InputStreamReader(input));
-
-            model.setServerConnected(true);
-            System.out.println("Connected to Server...");
-
-            executorService.submit(this::networkHandler);
-
+            initServer();
+            System.out.print("Connected to Server");
+            executorService.submit(this::clientHandler);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
-    private void networkHandler() {
-       try {
-           do {
-               String line = reader.readLine();
-               System.out.println(line);
-               Platform.runLater(() -> model.addShapeToList(concertToShape(line)));
-           } while (model.isServerConnected());
+    private void initServer() throws IOException {
 
-           } catch (IOException e) {
-           System.out.println("I/O error. Disconnected.");
-           Platform.runLater(() -> model.setServerConnected(false));
-       }
+        connected.bindBidirectional(model.serverConnectedProperty());
+        socket.set(new Socket("127.0.0.1", 8000));
+        writer = new PrintWriter(socket.get().getOutputStream(), true);
+        reader = new BufferedReader(new InputStreamReader(socket.get().getInputStream()));
+
+        model.setServerConnected(true);
     }
 
-        public Shape concertToShape(String line) {
-            try {
-                Pattern pattern = Pattern.compile("=");
-
-                String[] parameterArray = pattern.split(line);
-                if (line.contains("circle")) {
-                    return shapeFactory.getShape(CIRCLE, new ShapeParameter(
-                            Double.parseDouble(parameterArray[1].substring(1, 5)),
-                            Double.parseDouble(parameterArray[2].substring(1, 5)),
-                            (Integer.parseInt(parameterArray[3].substring(1, 5)) * 2),
-                            Color.valueOf(parameterArray[4].substring(1, 10))));
-                } else if (line.contains("rect")) {
-                    return shapeFactory.getShape(SQUARE, new ShapeParameter(
-                            Double.parseDouble(parameterArray[1].substring(1, 5)),
-                            Double.parseDouble(parameterArray[2].substring(1, 5)),
-                            Integer.parseInt(parameterArray[3].substring(1, 5)),
-                            Color.valueOf(parameterArray[4].substring(1, 10))));
-                }
-            } catch (ArrayIndexOutOfBoundsException e) {
-                throw new RuntimeException();
+    private void clientHandler() {
+        try {
+            while (model.isServerConnected()) {
+                readFromServer();
             }
-            return null;
-        }
-
-        public void addShapeToServer (Shape shape){
-            if (model.isServerConnected())
-                writer.println(shape.drawToSVGAsString());
-            else
-                model.addShapeToList(shape);
-
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
     }
+
+    private void readFromServer() throws IOException {
+        String line = reader.readLine();
+        if (line == null || line.contains("joined") || line.contains("left"))
+            return;
+        Platform.runLater(() -> model.addShapeToList(shapeFactory.convertSVGToShape(line)));
+    }
+
+    public void addShapeToServer(Shape shape) {
+        if (model.isServerConnected())
+            try {
+                writer.println(shape.drawToSVGAsString());
+            } catch (NullPointerException e) {
+                System.out.println(e.getMessage());
+            }
+        else
+            model.addShapeToList(shape);
+
+    }
+}

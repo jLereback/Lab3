@@ -14,4 +14,28 @@ public class ShapeFactory {
             case SQUARE -> new Square(parameter);
         };
     }
+
+    public Shape convertSVGToShape(String line) {
+        try {
+            Pattern pattern = Pattern.compile("=");
+
+            String[] parameterArray = pattern.split(line);
+            if (line.contains("circle")) {
+                return getShape(CIRCLE, new ShapeParameter(
+                        Double.parseDouble(parameterArray[1].substring(1, 5)),
+                        Double.parseDouble(parameterArray[2].substring(1, 5)),
+                        (Double.parseDouble(parameterArray[3].substring(1, 5)) * 2),
+                        Color.valueOf(parameterArray[4].substring(1, 10))));
+            } else if (line.contains("rect")) {
+                return getShape(SQUARE, new ShapeParameter(
+                        Double.parseDouble(parameterArray[1].substring(1, 5)),
+                        Double.parseDouble(parameterArray[2].substring(1, 5)),
+                        Double.parseDouble(parameterArray[3].substring(1, 5)),
+                        Color.valueOf(parameterArray[4].substring(1, 10))));
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new RuntimeException();
+        }
+        return null;
+    }
 }

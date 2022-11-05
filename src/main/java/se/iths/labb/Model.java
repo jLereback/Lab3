@@ -6,11 +6,11 @@ import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import se.iths.labb.shapes.Shape;
 import se.iths.labb.shapes.ShapeType;
-import se.iths.labb.svg.Server;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+import static se.iths.labb.shapes.ShapeType.*;
 import static se.iths.labb.svg.Server.getServer;
 
 public class Model {
@@ -19,7 +19,7 @@ public class Model {
     private final Deque<Deque<Shape>> undoDeque;
     private final Deque<Deque<Shape>> redoDeque;
     private final ObservableList<Shape> shapeList;
-    private final ObjectProperty<Integer> size;
+    private final ObjectProperty<Double> size;
     private final ObjectProperty<Color> color;
     private final ObjectProperty<ShapeType> shapeType;
 
@@ -32,8 +32,8 @@ public class Model {
         this.undoDeque = new ArrayDeque<>();
         this.redoDeque = new ArrayDeque<>();
         this.color = new SimpleObjectProperty<>(Color.web("#004B87"));
-        this.size = new SimpleObjectProperty<>(50);
-        this.shapeType = new SimpleObjectProperty<>(ShapeType.CIRCLE);
+        this.size = new SimpleObjectProperty<>(50.0);
+        this.shapeType = new SimpleObjectProperty<>(CIRCLE);
     }
 
     public ObjectProperty<ShapeType> shapeTypeProperty() {
@@ -48,11 +48,11 @@ public class Model {
         this.shapeType.set(shapeType);
     }
 
-    public Property<Integer> sizeProperty() {
+    public Property<Double> sizeProperty() {
         return size;
     }
 
-    public Integer getSize() {
+    public Double getSize() {
         return size.get();
     }
 
@@ -116,7 +116,7 @@ public class Model {
     public void sendToList(Shape shape) {
         if (isServerConnected())
             getServer().addShapeToServer(shape);
-        else
+            else
             addShapeToList(shape);
     }
 
@@ -137,7 +137,10 @@ public class Model {
     }
 
     public void connectToServer() {
-        getServer().connectToServer();
+        getServer().connect(this);
+    }
 
+    public void disconnectFromServer() {
+        getServer().disconnect();
     }
 }

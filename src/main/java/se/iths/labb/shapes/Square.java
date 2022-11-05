@@ -5,7 +5,9 @@ import javafx.scene.canvas.GraphicsContext;
 import static se.iths.labb.shapes.ShapeType.*;
 
 public final class Square extends Shape {
-    double halfSideSize = getSize() >> 1;
+    double halfSideSize = getSize()/2;
+
+    String colorAsString = getColor().toString().substring(2, 10);
     public Square(ShapeParameter parameter) {
         super(parameter);
     }
@@ -22,7 +24,7 @@ public final class Square extends Shape {
     }
 
     private double getHalfSideSize() {
-        return getSize() >> 1;
+        return getSize()/2;
     }
 
     @Override
@@ -40,11 +42,10 @@ public final class Square extends Shape {
 
     @Override
     public String drawToSVGAsString() {
-        String convertColor = getColor().toString().substring(2, 10);
         return "<rect x=\"" + (getX() - halfSideSize) + "\" " +
                 "y=\"" + (getY() - halfSideSize) + "\" " +
                 "width=\"" + getSize() + "\" " +
                 "height=\"" + getSize() + "\" " +
-                "fill=\"#" + convertColor + "\" />";
+                "fill=\"#" + colorAsString + "\" />";
     }
 }
