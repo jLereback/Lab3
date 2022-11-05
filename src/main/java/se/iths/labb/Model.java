@@ -8,6 +8,7 @@ import se.iths.labb.shapes.Shape;
 import se.iths.labb.shapes.ShapeType;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
 
 import static se.iths.labb.shapes.ShapeType.*;
@@ -18,7 +19,7 @@ public class Model {
     private final ObservableList<ShapeType> choiceBoxShapeList;
     private final Deque<Deque<Shape>> undoDeque;
     private final Deque<Deque<Shape>> redoDeque;
-    private final ObservableList<Shape> shapeList;
+    private ObservableList<Shape> shapeList;
     private final ObjectProperty<Double> size;
     private final ObjectProperty<Color> color;
     private final ObjectProperty<ShapeType> shapeType;
@@ -98,30 +99,42 @@ public class Model {
         shapeList.addAll(redoDeque.removeLast());
     }
 
-    public Deque<Shape> getTempList() {
+    public ObservableList<Shape> getTempList() {
+        ObservableList<Shape> tempList = FXCollections.observableArrayList();
+        for (Shape shape : shapeList)
+            tempList.add(shape.getShapeDuplicate());
+        return tempList;
+    }
+    public Deque<Shape> getShapeListAsDeque() {
         Deque<Shape> tempList = new ArrayDeque<>();
         for (Shape shape : shapeList)
             tempList.add(shape.getShapeDuplicate());
         return tempList;
     }
 
+    public void updateShapeList() {
+        ObservableList<Shape> tempList = getTempList();
+        shapeList.clear();
+        shapeList.addAll(tempList);
+    }
+
     public void addToUndoDeque() {
-        undoDeque.addLast(getTempList());
+        undoDeque.addLast(getShapeListAsDeque());
     }
 
     public void addToRedoDeque() {
-        redoDeque.addLast(getTempList());
+        redoDeque.addLast(getShapeListAsDeque());
+    }
+
+    public void addShapeToList(Shape shape) {
+        shapeList.add(shape);
     }
 
     public void sendToList(Shape shape) {
         if (isServerConnected())
             getServer().addShapeToServer(shape);
-            else
+        else
             addShapeToList(shape);
-    }
-
-    public void addShapeToList(Shape shape) {
-        shapeList.add(shape);
     }
 
     public BooleanProperty serverConnectedProperty() {
@@ -140,7 +153,7 @@ public class Model {
         getServer().connect(this);
     }
 
-    public void disconnectFromServer() {
+    public void disconnect() {
         getServer().disconnect();
     }
 }

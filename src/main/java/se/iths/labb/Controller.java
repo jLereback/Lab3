@@ -43,8 +43,6 @@ public class Controller {
     public void initialize() {
 
 
-
-
         context = paintingArea.getGraphicsContext2D();
 
         connectToServer.selectedProperty().bindBidirectional(model.serverConnectedProperty());
@@ -63,7 +61,6 @@ public class Controller {
         menuUndo.setAccelerator(UNDO);
         menuSave.setAccelerator(SAVE);
 
-
         preparePaintingArea();
     }
 
@@ -77,9 +74,7 @@ public class Controller {
         else
             createNewShape(mouseEvent);
         model.getRedoDeque().clear();
-        draw();
     }
-
     private void createNewShape(MouseEvent mouseEvent) {
         createNewShapeParameter(mouseEvent.getX(), mouseEvent.getY());
 
@@ -103,12 +98,10 @@ public class Controller {
 
     public void undoClicked() {
         model.undo();
-        draw();
     }
 
     public void redoClicked() {
         model.redo();
-        draw();
     }
 
     public void updateShape(MouseEvent mouseEvent) {
@@ -116,6 +109,7 @@ public class Controller {
             return;
         model.addToUndoDeque();
         findShape(mouseEvent).ifPresent(shape -> shape.updateShape(model.getColor(), model.getSize()));
+        model.updateShapeList();
     }
 
     private void updateColor(MouseEvent mouseEvent) {
@@ -123,6 +117,7 @@ public class Controller {
             return;
         model.addToUndoDeque();
         findShape(mouseEvent).ifPresent(shape -> shape.setColor(model.getColor()));
+        model.updateShapeList();
     }
 
     private void updateSize(MouseEvent mouseEvent) {
@@ -130,6 +125,7 @@ public class Controller {
             return;
         model.addToUndoDeque();
         findShape(mouseEvent).ifPresent(shape -> shape.setSize(model.getSize()));
+        model.updateShapeList();
     }
 
     private Optional<Shape> findShape(MouseEvent mouseEvent) {
@@ -145,11 +141,12 @@ public class Controller {
     public void save() {
         getSVGWriter().save(model, stage);
     }
+
     public void connectToServer() {
         if (connectToServer.isSelected())
             model.connectToServer();
         else
-            model.disconnectFromServer();
+            model.disconnect();
     }
 
     public void exit() {

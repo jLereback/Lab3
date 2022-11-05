@@ -28,18 +28,17 @@ public final class Circle extends Shape {
         double distX = posX - getX();
         double distY = posY - getY();
 
-        double distToCenter = (Math.pow(distX + distY,2));
+        double distToCenter = (distX * distX + distY * distY);
 
         return distToCenter <= radiusSq;
     }
-
     @Override
     public ShapeType getType() {
         return CIRCLE;
     }
 
     @Override
-    public String drawToSVGAsString() {
+    public String toString() {
         return "<circle cx=\"" + getX() + "\" " +
                 "cy=\"" + getY() + "\" " +
                 "r=\"" + radius + "\" " +

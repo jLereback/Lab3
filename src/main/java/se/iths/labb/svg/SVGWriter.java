@@ -55,7 +55,7 @@ public class SVGWriter {
     }
 
     private static void addAllShapesAsStrings(Model model, List<String> strings) {
-        model.getShapeList().forEach(shape -> strings.add(String.join(" ", shape.drawToSVGAsString())));
+        model.getShapeList().forEach(shape -> strings.add(String.join(" ", shape.toString())));
     }
 
     private static void addFinalString(List<String> strings) {

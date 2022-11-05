@@ -2,10 +2,7 @@ package se.iths.labb.svg;
 
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.concurrent.Task;
-import javafx.scene.control.ProgressBar;
 import se.iths.labb.Model;
 import se.iths.labb.shapes.*;
 import se.iths.labb.shapes.ShapeFactory;
@@ -17,19 +14,16 @@ import java.io.*;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class Server {
-    private static final double EPSILON = 0.0000005;
-
     private Model model;
     private final ShapeFactory shapeFactory;
     private final ThreadLocal<Socket> socket = new ThreadLocal<>();
     private PrintWriter writer;
     private BufferedReader reader;
     private final BooleanProperty connected = new SimpleBooleanProperty(false);
-    private static final Server server = new Server();
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private static final Server server = new Server();
 
     public static Server getServer() {
         return server;
@@ -38,7 +32,6 @@ public class Server {
     public Server() {
         this.shapeFactory = new ShapeFactory();
     }
-
 
     public void connect(Model model) {
         this.model = model;
@@ -99,12 +92,11 @@ public class Server {
     public void addShapeToServer(Shape shape) {
         if (model.isServerConnected())
             try {
-                writer.println(shape.drawToSVGAsString());
+                writer.println(shape.toString());
             } catch (NullPointerException e) {
                 System.out.println(e.getMessage());
             }
         else
             model.addShapeToList(shape);
-
     }
 }

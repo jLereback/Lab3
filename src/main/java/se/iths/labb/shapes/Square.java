@@ -23,10 +23,6 @@ public final class Square extends Shape {
         context.fillRect(getX() - halfSideSize, getY() - halfSideSize, getSize(), getSize());
     }
 
-    private double getHalfSideSize() {
-        return getSize()/2;
-    }
-
     @Override
     public Boolean isInside(double posX, double posY) {
         double distanceToX = Math.abs(posX - getX());
@@ -34,14 +30,13 @@ public final class Square extends Shape {
 
         return distanceToX <= halfSideSize && distanceToY <= halfSideSize;
     }
-
     @Override
     public ShapeType getType() {
         return SQUARE;
     }
 
     @Override
-    public String drawToSVGAsString() {
+    public String toString() {
         return "<rect x=\"" + (getX() - halfSideSize) + "\" " +
                 "y=\"" + (getY() - halfSideSize) + "\" " +
                 "width=\"" + getSize() + "\" " +
