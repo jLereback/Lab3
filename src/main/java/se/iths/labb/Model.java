@@ -35,7 +35,7 @@ public class Model {
         this.shapeList = FXCollections.observableArrayList();
         this.undoDeque = new ArrayDeque<>();
         this.redoDeque = new ArrayDeque<>();
-        this.color = new SimpleObjectProperty<>(Color.web("#004B87"));
+        this.color = new SimpleObjectProperty<>(Color.web("#44966C"));
         this.size = new SimpleObjectProperty<>(50.0);
         this.shapeType = new SimpleObjectProperty<>(CIRCLE);
     }

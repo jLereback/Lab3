@@ -50,7 +50,7 @@ public class Server {
     }
 
     private void terminateServer() throws InterruptedException, IOException {
-        if (executorService.awaitTermination(100, TimeUnit.MILLISECONDS))
+        if (executorService.awaitTermination(10, TimeUnit.MILLISECONDS))
             executorService.shutdown();
         writer.close();
         model.setServerConnected(false);
@@ -89,10 +89,8 @@ public class Server {
 
     private void readFromServer() throws IOException {
         String line = reader.readLine();
-        if (line == null || line.contains("joined") || line.contains("left"))
-            return;
-        System.out.println(line);
-        Platform.runLater(() -> model.addShapeToList(shapeFactory.convertStringToShape(line)));
+        if (!(line == null || line.contains("joined") || line.contains("left")))
+            Platform.runLater(() -> model.addShapeToList(shapeFactory.convertStringToShape(line)));
     }
 
     public void addShapeToServer(Shape shape) {
