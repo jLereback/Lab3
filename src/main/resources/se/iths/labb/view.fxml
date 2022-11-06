@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.canvas.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckMenuItem?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane minHeight="300.0" minWidth="350.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="450.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.iths.labb.Controller">
+<BorderPane minHeight="300.0" minWidth="350.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="450.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.iths.labb.Controller">
     <top>
         <VBox prefHeight="52.0" prefWidth="600.0" BorderPane.alignment="CENTER">
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
@@ -13,7 +31,7 @@
                         <CheckMenuItem fx:id="connectToServer" onAction="#connectToServer" text="Connected to Server" />
                         <MenuItem fx:id="menuSave" onAction="#save" text="Save" />
                         <SeparatorMenuItem />
-                        <MenuItem onAction="#exit" text="Close" />
+                        <MenuItem fx:id="menuExit" onAction="#exit" text="Exit" />
                     </Menu>
                     <Menu text="Edit">
                         <MenuItem fx:id="menuUndo" onAction="#undoClicked" text="Undo" />
@@ -38,12 +56,24 @@
                 <ChoiceBox fx:id="shapeType" prefWidth="100.0" />
                 <ColorPicker fx:id="colorPicker" prefWidth="100.0" />
                 <Spinner fx:id="sizeSpinner" amountToStepBy="2.0" editable="true" max="400.0" min="1.0" prefWidth="75.0" />
+            <ToggleButton fx:id="brush" text="Activate Brush" onAction="#updateBrush"/>
                 <Button fx:id="undoButton" onAction="#undoClicked" text="Undo" />
                 <Button fx:id="redoButton" onAction="#redoClicked" text="Redo" />
             </ToolBar>
         </VBox>
     </top>
     <center>
-        <Canvas fx:id="paintingArea" height="800.0" onMouseClicked="#canvasClicked" width="1600.0" BorderPane.alignment="TOP_LEFT" />
+        <HBox prefHeight="554.0" prefWidth="1242.0" BorderPane.alignment="TOP_LEFT">
+            <TitledPane fx:id="chatArea" alignment="TOP_LEFT" prefHeight="390.0" prefWidth="150.0" text="Chat" wrapText="true" BorderPane.alignment="CENTER">
+                <AnchorPane minWidth="150.0" prefHeight="364.0" prefWidth="150.0">
+                    <ListView prefHeight="221.0" prefWidth="142.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                    <TextField AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                </AnchorPane>
+            </TitledPane>
+            <Canvas fx:id="paintingArea" height="800.0" onMouseClicked="#canvasClicked" onMouseDragged="#canvasDragged" width="1600.0" />
+        </HBox>
     </center>
+    <left>
+
+    </left>
 </BorderPane>

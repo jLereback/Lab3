@@ -1,6 +1,9 @@
 package se.iths.labb;
 
 import javafx.collections.ListChangeListener;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventType;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
@@ -21,28 +24,34 @@ public class Controller {
     static final KeyCombination SAVE = new KeyCodeCombination(KeyCode.S, CONTROL_DOWN);
     static final KeyCombination UNDO = new KeyCodeCombination(KeyCode.Z, CONTROL_DOWN);
     static final KeyCombination REDO = new KeyCodeCombination(KeyCode.Y, CONTROL_DOWN);
+    static final KeyCombination EXIT = new KeyCodeCombination(KeyCode.E, ALT_DOWN);
+
     static final Color BACKGROUND_COLOR = Color.web("#edece0");
     static final int MAX_WIDTH = 2000;
     static final int MAX_HEIGHT = 1000;
 
     Model model = new Model();
     ShapeFactory shapeFactory = new ShapeFactory();
+
     public GraphicsContext context;
+    private Stage stage;
     public ShapeParameter shapeParameter;
-    public CheckMenuItem viewUndo;
-    public CheckMenuItem viewRedo;
-    public Button undoButton;
-    public Button redoButton;
-    public Label connectedLabel;
+    public ChoiceBox<ShapeType> shapeType;
     public CheckMenuItem connectToServer;
     public Spinner<Double> sizeSpinner;
-    public ChoiceBox<ShapeType> shapeType;
     public ColorPicker colorPicker;
+    public CheckMenuItem viewRedo;
+    public CheckMenuItem viewUndo;
+    public Label connectedLabel;
+    public TitledPane chatArea;
     public Canvas paintingArea;
+    public ToggleButton brush;
+    public Button undoButton;
+    public Button redoButton;
     public MenuItem menuUndo;
     public MenuItem menuSave;
     public MenuItem menuRedo;
-    private Stage stage;
+    public MenuItem menuExit;
 
     public void initialize() {
         context = paintingArea.getGraphicsContext2D();
@@ -56,6 +65,11 @@ public class Controller {
         viewRedo.selectedProperty().bindBidirectional(model.redoVisibleProperty());
         redoButton.visibleProperty().bind(model.redoVisibleProperty());
 
+        chatArea.visibleProperty().bind(model.serverConnectedProperty());
+
+
+        brush.selectedProperty().bind(model.brushProperty());
+        brush.textProperty().bind(model.brushTextProperty());
 
         colorPicker.valueProperty().bindBidirectional(model.colorProperty());
 
@@ -69,11 +83,15 @@ public class Controller {
         menuRedo.setAccelerator(REDO);
         menuUndo.setAccelerator(UNDO);
         menuSave.setAccelerator(SAVE);
+        menuExit.setAccelerator(EXIT);
 
         preparePaintingArea();
     }
 
     public void canvasClicked(MouseEvent mouseEvent) {
+        if (brush.isSelected()) {
+            paintingArea.setOnMouseDragReleased(this::createNewShape);
+        }
         if (mouseEvent.isControlDown() && mouseEvent.isShiftDown())
             updateShape(mouseEvent);
         else if (mouseEvent.isControlDown())
@@ -84,6 +102,11 @@ public class Controller {
             createNewShape(mouseEvent);
         model.getRedoDeque().clear();
     }
+
+    public void canvasDragged() {
+
+    }
+
     private void createNewShape(MouseEvent mouseEvent) {
         createNewShapeParameter(mouseEvent.getX(), mouseEvent.getY());
 
@@ -147,10 +170,6 @@ public class Controller {
         this.stage = stage;
     }
 
-    public void save() {
-        getSVGWriter().save(model, stage);
-    }
-
     public void connectToServer() {
         if (connectToServer.isSelected())
             model.connectToServer();
@@ -158,7 +177,23 @@ public class Controller {
             model.disconnect();
     }
 
+    public void save() {
+        getSVGWriter().save(model, stage);
+    }
+
     public void exit() {
         System.exit(0);
     }
+
+    public void updateBrush() {
+        if (model.isBrush()) {
+            model.setBrushText("Put down Brush");
+            paintingArea.setOnMouseDragged(this::createNewShape);
+        }
+        else {
+            model.setBrushText("Pick up Brush");
+            paintingArea.setOnMouseDragged(null);
+        }
+    }
 }
+

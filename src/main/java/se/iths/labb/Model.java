@@ -17,10 +17,12 @@ public class Model {
     private final BooleanProperty serverConnected;
     private final BooleanProperty undoVisible;
     private final BooleanProperty redoVisible;
+    private final BooleanProperty brush;
     private final ObservableList<ShapeType> choiceBoxShapeList;
     private final Deque<Deque<Shape>> undoDeque;
     private final Deque<Deque<Shape>> redoDeque;
     private final ObservableList<Shape> shapeList;
+    private ObjectProperty<String> brushText;
     private final ObjectProperty<Double> size;
     private final ObjectProperty<Color> color;
     private final ObjectProperty<ShapeType> shapeType;
@@ -31,10 +33,12 @@ public class Model {
         this.serverConnected = new SimpleBooleanProperty();
         this.undoVisible = new SimpleBooleanProperty(true);
         this.redoVisible = new SimpleBooleanProperty(true);
+        this.brush = new SimpleBooleanProperty(false);
         this.choiceBoxShapeList = FXCollections.observableArrayList(ShapeType.values());
         this.shapeList = FXCollections.observableArrayList();
         this.undoDeque = new ArrayDeque<>();
         this.redoDeque = new ArrayDeque<>();
+        this.brushText = new SimpleObjectProperty<>("Pick up Brush");
         this.color = new SimpleObjectProperty<>(Color.web("#44966C"));
         this.size = new SimpleObjectProperty<>(50.0);
         this.shapeType = new SimpleObjectProperty<>(CIRCLE);
@@ -90,6 +94,30 @@ public class Model {
 
     public void setRedoVisible(boolean redoVisible) {
         this.redoVisible.set(redoVisible);
+    }
+
+    public void setBrushText(String brushText) {
+        this.brushText.set(brushText);
+    }
+
+    public String getBrushText() {
+        return brushText.get();
+    }
+
+    public ObjectProperty<String> brushTextProperty() {
+        return brushText;
+    }
+
+    public boolean isBrush() {
+        return brush.get();
+    }
+
+    public BooleanProperty brushProperty() {
+        return brush;
+    }
+
+    public void setBrush(boolean brush) {
+        this.brush.set(brush);
     }
 
     public ObservableList<ShapeType> getChoiceBoxShapeList() {

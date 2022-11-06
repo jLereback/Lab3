@@ -31,7 +31,7 @@ public class ShapeFactory {
                         Double.parseDouble(parameterArray[1].substring(1, 5)),
                         Double.parseDouble(parameterArray[2].substring(1, 5)),
                         Double.parseDouble(parameterArray[3].substring(1, 5)),
-                        Color.valueOf(parameterArray[4].substring(1, 10))));
+                        Color.valueOf(parameterArray[5].substring(1, 10))));
             }
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new RuntimeException();
