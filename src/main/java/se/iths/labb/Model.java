@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import se.iths.labb.shapes.Shape;
 import se.iths.labb.shapes.ShapeType;
+import se.iths.labb.svg.Server;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -14,6 +15,8 @@ import static se.iths.labb.shapes.ShapeType.*;
 import static se.iths.labb.svg.Server.*;
 
 public class Model {
+    Server server = new Server();
+
     private final BooleanProperty serverConnected;
     private final BooleanProperty undoVisible;
     private final BooleanProperty redoVisible;
@@ -22,14 +25,18 @@ public class Model {
     private final Deque<Deque<Shape>> undoDeque;
     private final Deque<Deque<Shape>> redoDeque;
     private final ObservableList<Shape> shapeList;
-    private ObjectProperty<String> brushText;
+    private final ObjectProperty<String> brushText;
     private final ObjectProperty<Double> size;
     private final ObjectProperty<Color> color;
     private final ObjectProperty<ShapeType> shapeType;
+    private final StringProperty chatInput;
+    private final ObservableList<String> chatList;
+
 
 
     public Model() {
-
+        this.chatList = FXCollections.observableArrayList();
+        this.chatInput = new SimpleStringProperty();
         this.serverConnected = new SimpleBooleanProperty();
         this.undoVisible = new SimpleBooleanProperty(true);
         this.redoVisible = new SimpleBooleanProperty(true);
@@ -42,6 +49,22 @@ public class Model {
         this.color = new SimpleObjectProperty<>(Color.web("#44966C"));
         this.size = new SimpleObjectProperty<>(50.0);
         this.shapeType = new SimpleObjectProperty<>(CIRCLE);
+    }
+
+    public ObservableList<String> getChatList() {
+        return chatList;
+    }
+
+    public String getChatInput() {
+        return chatInput.get();
+    }
+
+    public StringProperty chatInputProperty() {
+        return chatInput;
+    }
+
+    public void setChatInput(String chatInput) {
+        this.chatInput.set(chatInput);
     }
 
     public ObjectProperty<ShapeType> shapeTypeProperty() {
@@ -135,6 +158,9 @@ public class Model {
     public Deque<Deque<Shape>> getRedoDeque() {
         return redoDeque;
     }
+    public Server getServer() {
+        return server;
+    }
 
     public void undo() {
         if (undoDeque.isEmpty())
@@ -187,7 +213,7 @@ public class Model {
 
     public void sendToList(Shape shape) {
         if (isServerConnected())
-            getServer().addShapeToServer(shape);
+            server.addShapeToServer(shape);
         else
             addShapeToList(shape);
     }
@@ -205,10 +231,10 @@ public class Model {
     }
 
     public void connectToServer() {
-        getServer().connect(this);
+        server.connect(this);
     }
 
     public void disconnect() {
-        getServer().disconnect();
+        server.disconnect();
     }
 }

@@ -56,24 +56,31 @@
                 <ChoiceBox fx:id="shapeType" prefWidth="100.0" />
                 <ColorPicker fx:id="colorPicker" prefWidth="100.0" />
                 <Spinner fx:id="sizeSpinner" amountToStepBy="2.0" editable="true" max="400.0" min="1.0" prefWidth="75.0" />
-            <ToggleButton fx:id="brush" text="Activate Brush" onAction="#updateBrush"/>
+            <ToggleButton fx:id="brush" onAction="#updateBrush" text="Pick up Brush" />
                 <Button fx:id="undoButton" onAction="#undoClicked" text="Undo" />
                 <Button fx:id="redoButton" onAction="#redoClicked" text="Redo" />
             </ToolBar>
         </VBox>
     </top>
-    <center>
-        <HBox prefHeight="554.0" prefWidth="1242.0" BorderPane.alignment="TOP_LEFT">
-            <TitledPane fx:id="chatArea" alignment="TOP_LEFT" prefHeight="390.0" prefWidth="150.0" text="Chat" wrapText="true" BorderPane.alignment="CENTER">
-                <AnchorPane minWidth="150.0" prefHeight="364.0" prefWidth="150.0">
-                    <ListView prefHeight="221.0" prefWidth="142.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                    <TextField AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                </AnchorPane>
-            </TitledPane>
-            <Canvas fx:id="paintingArea" height="800.0" onMouseClicked="#canvasClicked" onMouseDragged="#canvasDragged" width="1600.0" />
-        </HBox>
-    </center>
     <left>
 
     </left>
+   <bottom>
+        <HBox prefHeight="554.0" prefWidth="1242.0" BorderPane.alignment="CENTER" />
+   </bottom>
+   <center>
+       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="TOP_LEFT">
+           <Canvas fx:id="paintingArea" height="800.0" onMouseClicked="#canvasClicked" width="1600.0"/>
+           <TitledPane fx:id="chatArea" alignment="TOP_LEFT" maxWidth="300.0" prefHeight="390.0" prefWidth="153.0"
+                       text="Chat" wrapText="true">
+               <VBox prefHeight="200.0" prefWidth="100.0">
+                   <ListView fx:id="chatListview" prefHeight="336.0" prefWidth="133.0" VBox.vgrow="ALWAYS" editable="true"/>
+                   <HBox alignment="BOTTOM_LEFT" prefHeight="59.0" prefWidth="143.0">
+                       <TextField fx:id="chatInput" onAction="#sendMessage" />
+                       <Button fx:id="sendButton" onAction="#sendMessage" mnemonicParsing="false" text="Button"/>
+                   </HBox>
+               </VBox>
+           </TitledPane>
+       </AnchorPane>
+   </center>
 </BorderPane>

@@ -24,11 +24,6 @@ public class Server {
     private BufferedReader reader;
     private final BooleanProperty connected = new SimpleBooleanProperty(false);
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
-    private static final Server server = new Server();
-
-    public static Server getServer() {
-        return server;
-    }
 
     public Server() {
         this.shapeFactory = new ShapeFactory();
@@ -99,5 +94,8 @@ public class Server {
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());
         }
+    }
+    public void sendMessage(String string) {
+        writer.println("Julia: " + string);
     }
 }

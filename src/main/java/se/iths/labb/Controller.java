@@ -1,9 +1,7 @@
 package se.iths.labb;
 
+import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventType;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
@@ -29,23 +27,26 @@ public class Controller {
     static final Color BACKGROUND_COLOR = Color.web("#edece0");
     static final int MAX_WIDTH = 2000;
     static final int MAX_HEIGHT = 1000;
+    public TitledPane chatArea;
 
     Model model = new Model();
     ShapeFactory shapeFactory = new ShapeFactory();
+    private Stage stage;
 
     public GraphicsContext context;
-    private Stage stage;
     public ShapeParameter shapeParameter;
     public ChoiceBox<ShapeType> shapeType;
+    public ListView<String> chatListview;
     public CheckMenuItem connectToServer;
     public Spinner<Double> sizeSpinner;
     public ColorPicker colorPicker;
     public CheckMenuItem viewRedo;
     public CheckMenuItem viewUndo;
     public Label connectedLabel;
-    public TitledPane chatArea;
+    public TextField chatInput;
     public Canvas paintingArea;
     public ToggleButton brush;
+    public Button sendButton;
     public Button undoButton;
     public Button redoButton;
     public MenuItem menuUndo;
@@ -67,9 +68,17 @@ public class Controller {
 
         chatArea.visibleProperty().bind(model.serverConnectedProperty());
 
-
-        brush.selectedProperty().bind(model.brushProperty());
         brush.textProperty().bind(model.brushTextProperty());
+        chatInput.textProperty().bindBidirectional(model.chatInputProperty());
+
+
+
+        chatListview.setItems(model.getChatList());
+
+
+        sendButton.disableProperty().bind(model.chatInputProperty().isEmpty());
+
+
 
         colorPicker.valueProperty().bindBidirectional(model.colorProperty());
 
@@ -101,10 +110,6 @@ public class Controller {
         else
             createNewShape(mouseEvent);
         model.getRedoDeque().clear();
-    }
-
-    public void canvasDragged() {
-
     }
 
     private void createNewShape(MouseEvent mouseEvent) {
@@ -186,7 +191,7 @@ public class Controller {
     }
 
     public void updateBrush() {
-        if (model.isBrush()) {
+        if (brush.isSelected()) {
             model.setBrushText("Put down Brush");
             paintingArea.setOnMouseDragged(this::createNewShape);
         }
@@ -194,6 +199,10 @@ public class Controller {
             model.setBrushText("Pick up Brush");
             paintingArea.setOnMouseDragged(null);
         }
+    }
+
+    public void sendMessage() {
+        model.getServer().sendMessage(model.getChatInput());
     }
 }
 

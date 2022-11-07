@@ -15,6 +15,7 @@ public class SVGWriter {
     Path filePath;
 
     private static final SVGWriter svgWriter = new SVGWriter();
+
     public static SVGWriter getSVGWriter() {
         return svgWriter;
     }
