@@ -84,8 +84,10 @@ public class Server {
 
     private void readFromServer() throws IOException {
         String line = reader.readLine();
-        if (!(line == null || line.contains("joined") || line.contains("left")))
+        if (line.endsWith("\" />")/*!(line == null || line.contains("joined") || line.contains("left"))*/)
             Platform.runLater(() -> model.addShapeToList(shapeFactory.convertStringToShape(line)));
+        else
+            Platform.runLater(() -> model.getChatList().add(line));
     }
 
     public void addShapeToServer(Shape shape) {

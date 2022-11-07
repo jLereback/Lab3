@@ -19,21 +19,20 @@ public class ShapeFactory {
         try {
             Pattern pattern = Pattern.compile("=");
             String[] parameterArray = pattern.split(line);
-            if (line.contains("circle")) {
+            if (line.contains("circle"))
                 return getShape(CIRCLE,
                         new ShapeParameter(
                         getX(parameterArray),
                         getY(parameterArray),
                         getSize(parameterArray) * 2,
                         getColor(parameterArray, 4)));
-            } else if (line.contains("rect")) {
+            else if (line.contains("rect"))
                 return getShape(SQUARE,
                         new ShapeParameter(
                         getX(parameterArray),
                         getY(parameterArray),
                         getSize(parameterArray),
                         getColor(parameterArray, 5)));
-            }
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new RuntimeException();
         }

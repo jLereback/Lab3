@@ -1,6 +1,5 @@
 package se.iths.labb;
 
-import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -27,7 +26,8 @@ public class Controller {
     static final Color BACKGROUND_COLOR = Color.web("#edece0");
     static final int MAX_WIDTH = 2000;
     static final int MAX_HEIGHT = 1000;
-    public TitledPane chatArea;
+    public ToggleButton eraser;
+    public ToggleGroup equipment;
 
     Model model = new Model();
     ShapeFactory shapeFactory = new ShapeFactory();
@@ -36,17 +36,18 @@ public class Controller {
     public GraphicsContext context;
     public ShapeParameter shapeParameter;
     public ChoiceBox<ShapeType> shapeType;
-    public ListView<String> chatListview;
     public CheckMenuItem connectToServer;
     public Spinner<Double> sizeSpinner;
+    public ListView<String> chatWindow;
+    public TitledPane chatApplication;
+    public TextField chatInputField;
     public ColorPicker colorPicker;
     public CheckMenuItem viewRedo;
     public CheckMenuItem viewUndo;
+    public Button chatSendButton;
     public Label connectedLabel;
-    public TextField chatInput;
     public Canvas paintingArea;
     public ToggleButton brush;
-    public Button sendButton;
     public Button undoButton;
     public Button redoButton;
     public MenuItem menuUndo;
@@ -55,6 +56,8 @@ public class Controller {
     public MenuItem menuExit;
 
     public void initialize() {
+
+
         context = paintingArea.getGraphicsContext2D();
 
         connectToServer.selectedProperty().bindBidirectional(model.serverConnectedProperty());
@@ -66,18 +69,16 @@ public class Controller {
         viewRedo.selectedProperty().bindBidirectional(model.redoVisibleProperty());
         redoButton.visibleProperty().bind(model.redoVisibleProperty());
 
-        chatArea.visibleProperty().bind(model.serverConnectedProperty());
 
-        brush.textProperty().bind(model.brushTextProperty());
-        chatInput.textProperty().bindBidirectional(model.chatInputProperty());
+        chatApplication.visibleProperty().bind(model.serverConnectedProperty());
 
+        chatInputField.textProperty().bindBidirectional(model.chatInputProperty());
+        chatWindow.setItems(model.getChatList());
 
+        brush.selectedProperty().bindBidirectional(model.brushProperty());
+        eraser.selectedProperty().bindBidirectional(model.eraserProperty());
 
-        chatListview.setItems(model.getChatList());
-
-
-        sendButton.disableProperty().bind(model.chatInputProperty().isEmpty());
-
+        chatSendButton.disableProperty().bind(model.chatInputProperty().isEmpty());
 
 
         colorPicker.valueProperty().bindBidirectional(model.colorProperty());
@@ -98,10 +99,9 @@ public class Controller {
     }
 
     public void canvasClicked(MouseEvent mouseEvent) {
-        if (brush.isSelected()) {
-            paintingArea.setOnMouseDragReleased(this::createNewShape);
-        }
-        if (mouseEvent.isControlDown() && mouseEvent.isShiftDown())
+        if (model.isEraser())
+            erase(mouseEvent);
+        else if (mouseEvent.isControlDown() && mouseEvent.isShiftDown())
             updateShape(mouseEvent);
         else if (mouseEvent.isControlDown())
             updateColor(mouseEvent);
@@ -110,6 +110,11 @@ public class Controller {
         else
             createNewShape(mouseEvent);
         model.getRedoDeque().clear();
+    }
+
+    private void erase(MouseEvent mouseEvent) {
+        model.addToUndoDeque();
+        findShape(mouseEvent).ifPresent(shape -> model.getShapeList().remove(shape));
     }
 
     private void createNewShape(MouseEvent mouseEvent) {
@@ -190,19 +195,24 @@ public class Controller {
         System.exit(0);
     }
 
-    public void updateBrush() {
-        if (brush.isSelected()) {
-            model.setBrushText("Put down Brush");
+    public void toggleBrush() {
+        if (model.isBrush())
             paintingArea.setOnMouseDragged(this::createNewShape);
-        }
-        else {
-            model.setBrushText("Pick up Brush");
+        else
             paintingArea.setOnMouseDragged(null);
-        }
     }
 
     public void sendMessage() {
         model.getServer().sendMessage(model.getChatInput());
+        chatInputField.clear();
+    }
+
+    public void openCloseChat() {
+        if (!chatApplication.isExpanded()) {
+            chatApplication.setPrefHeight(5);
+        } else {
+            chatApplication.setPrefHeight(390);
+        }
     }
 }
 

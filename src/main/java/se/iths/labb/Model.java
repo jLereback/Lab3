@@ -12,7 +12,6 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 import static se.iths.labb.shapes.ShapeType.*;
-import static se.iths.labb.svg.Server.*;
 
 public class Model {
     Server server = new Server();
@@ -21,11 +20,11 @@ public class Model {
     private final BooleanProperty undoVisible;
     private final BooleanProperty redoVisible;
     private final BooleanProperty brush;
+    private final BooleanProperty eraser;
     private final ObservableList<ShapeType> choiceBoxShapeList;
     private final Deque<Deque<Shape>> undoDeque;
     private final Deque<Deque<Shape>> redoDeque;
     private final ObservableList<Shape> shapeList;
-    private final ObjectProperty<String> brushText;
     private final ObjectProperty<Double> size;
     private final ObjectProperty<Color> color;
     private final ObjectProperty<ShapeType> shapeType;
@@ -40,12 +39,12 @@ public class Model {
         this.serverConnected = new SimpleBooleanProperty();
         this.undoVisible = new SimpleBooleanProperty(true);
         this.redoVisible = new SimpleBooleanProperty(true);
+        this.eraser = new SimpleBooleanProperty(false);
         this.brush = new SimpleBooleanProperty(false);
         this.choiceBoxShapeList = FXCollections.observableArrayList(ShapeType.values());
         this.shapeList = FXCollections.observableArrayList();
         this.undoDeque = new ArrayDeque<>();
         this.redoDeque = new ArrayDeque<>();
-        this.brushText = new SimpleObjectProperty<>("Pick up Brush");
         this.color = new SimpleObjectProperty<>(Color.web("#44966C"));
         this.size = new SimpleObjectProperty<>(50.0);
         this.shapeType = new SimpleObjectProperty<>(CIRCLE);
@@ -118,17 +117,16 @@ public class Model {
     public void setRedoVisible(boolean redoVisible) {
         this.redoVisible.set(redoVisible);
     }
-
-    public void setBrushText(String brushText) {
-        this.brushText.set(brushText);
+    public boolean isEraser() {
+        return eraser.get();
     }
 
-    public String getBrushText() {
-        return brushText.get();
+    public BooleanProperty eraserProperty() {
+        return eraser;
     }
 
-    public ObjectProperty<String> brushTextProperty() {
-        return brushText;
+    public void setEraser(boolean eraser) {
+        this.eraser.set(eraser);
     }
 
     public boolean isBrush() {
