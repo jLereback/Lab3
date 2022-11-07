@@ -62,10 +62,6 @@ public class Model {
         return chatInput;
     }
 
-    public void setChatInput(String chatInput) {
-        this.chatInput.set(chatInput);
-    }
-
     public ObjectProperty<ShapeType> shapeTypeProperty() {
         return shapeType;
     }
@@ -94,29 +90,14 @@ public class Model {
         return color.get();
     }
 
-    public boolean isUndoVisible() {
-        return undoVisible.get();
-    }
-
     public BooleanProperty undoVisibleProperty() {
         return undoVisible;
-    }
-
-    public void setUndoVisible(boolean undoVisible) {
-        this.undoVisible.set(undoVisible);
-    }
-
-    public boolean isRedoVisible() {
-        return redoVisible.get();
     }
 
     public BooleanProperty redoVisibleProperty() {
         return redoVisible;
     }
 
-    public void setRedoVisible(boolean redoVisible) {
-        this.redoVisible.set(redoVisible);
-    }
     public boolean isEraser() {
         return eraser.get();
     }
@@ -125,20 +106,12 @@ public class Model {
         return eraser;
     }
 
-    public void setEraser(boolean eraser) {
-        this.eraser.set(eraser);
-    }
-
     public boolean isBrush() {
         return brush.get();
     }
 
     public BooleanProperty brushProperty() {
         return brush;
-    }
-
-    public void setBrush(boolean brush) {
-        this.brush.set(brush);
     }
 
     public ObservableList<ShapeType> getChoiceBoxShapeList() {
