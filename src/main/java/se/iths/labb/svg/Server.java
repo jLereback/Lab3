@@ -84,7 +84,7 @@ public class Server {
 
     private void readFromServer() throws IOException {
         String line = reader.readLine();
-        if (line.endsWith("\" />"))
+        if (line.endsWith("/>"))
             Platform.runLater(() -> model.addShapeToList(shapeFactory.convertStringToShape(line)));
         else
             Platform.runLater(() -> model.getChatList().add(line));

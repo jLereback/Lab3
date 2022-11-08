@@ -15,6 +15,7 @@ import se.iths.labb.shapes.ShapeType;
 import java.util.Optional;
 
 import static javafx.scene.input.KeyCombination.*;
+import static se.iths.labb.DragResizer.*;
 import static se.iths.labb.svg.SVGWriter.getSVGWriter;
 
 public class Controller {
@@ -26,10 +27,9 @@ public class Controller {
     static final Color BACKGROUND_COLOR = Color.web("#edece0");
     static final int MAX_WIDTH = 2000;
     static final int MAX_HEIGHT = 1000;
-    public ToggleButton eraser;
-    public ToggleGroup equipment;
 
     Model model = new Model();
+
     ShapeFactory shapeFactory = new ShapeFactory();
     private Stage stage;
 
@@ -44,9 +44,11 @@ public class Controller {
     public ColorPicker colorPicker;
     public CheckMenuItem viewRedo;
     public CheckMenuItem viewUndo;
+    public ToggleGroup equipment;
     public Button chatSendButton;
     public Label connectedLabel;
     public Canvas paintingArea;
+    public ToggleButton eraser;
     public ToggleButton brush;
     public Button undoButton;
     public Button redoButton;
@@ -56,6 +58,10 @@ public class Controller {
     public MenuItem menuExit;
 
     public void initialize() {
+
+        chatApplication.expandedProperty().bindBidirectional(model.chatExpandedProperty());
+
+
 
 
         context = paintingArea.getGraphicsContext2D();
@@ -146,6 +152,14 @@ public class Controller {
         model.redo();
     }
 
+    public void resetClicked() {
+        model.getRedoDeque().clear();
+        model.addToUndoDeque();
+        preparePaintingArea();
+        model.getShapeList().clear();
+
+    }
+
     public void updateShape(MouseEvent mouseEvent) {
         if (findShape(mouseEvent).isEmpty())
             return;
@@ -208,9 +222,14 @@ public class Controller {
     }
 
     public void openCloseChat() {
-        if (!chatApplication.isExpanded()) {
+        if (!model.isChatExpanded()) {
+            model.setChatExpanded(true);
             chatApplication.setPrefHeight(5);
+            model.setChatExpanded(false);
+
+            makeSizeStatic(chatApplication);
         } else {
+            DragResizer.makeResizable(chatApplication);
             chatApplication.setPrefHeight(390);
         }
     }

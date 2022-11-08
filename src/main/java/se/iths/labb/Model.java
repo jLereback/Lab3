@@ -30,10 +30,12 @@ public class Model {
     private final ObjectProperty<ShapeType> shapeType;
     private final StringProperty chatInput;
     private final ObservableList<String> chatList;
+    private final BooleanProperty chatExpanded;
 
 
 
     public Model() {
+        this.chatExpanded = new SimpleBooleanProperty();
         this.chatList = FXCollections.observableArrayList();
         this.chatInput = new SimpleStringProperty();
         this.serverConnected = new SimpleBooleanProperty();
@@ -48,6 +50,22 @@ public class Model {
         this.color = new SimpleObjectProperty<>(Color.web("#44966C"));
         this.size = new SimpleObjectProperty<>(50.0);
         this.shapeType = new SimpleObjectProperty<>(CIRCLE);
+    }
+
+    public boolean getChatExpanded() {
+        return chatExpanded.get();
+    }
+
+    public boolean isChatExpanded() {
+        return chatExpanded.get();
+    }
+
+    public BooleanProperty chatExpandedProperty() {
+        return chatExpanded;
+    }
+
+    public void setChatExpanded(boolean chatExpanded) {
+        this.chatExpanded.set(chatExpanded);
     }
 
     public ObservableList<String> getChatList() {
