@@ -35,7 +35,7 @@ public class Model {
 
 
     public Model() {
-        this.chatExpanded = new SimpleBooleanProperty();
+        this.chatExpanded = new SimpleBooleanProperty(true);
         this.chatList = FXCollections.observableArrayList();
         this.chatInput = new SimpleStringProperty();
         this.serverConnected = new SimpleBooleanProperty();
@@ -50,10 +50,6 @@ public class Model {
         this.color = new SimpleObjectProperty<>(Color.web("#44966C"));
         this.size = new SimpleObjectProperty<>(50.0);
         this.shapeType = new SimpleObjectProperty<>(CIRCLE);
-    }
-
-    public boolean getChatExpanded() {
-        return chatExpanded.get();
     }
 
     public boolean isChatExpanded() {

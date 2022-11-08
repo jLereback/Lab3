@@ -24,6 +24,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<?import se.iths.labb.shapes.ResizablePaintingArea?>
 <BorderPane minHeight="300.0" minWidth="350.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="450.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.iths.labb.Controller">
     <top>
         <VBox prefHeight="52.0" prefWidth="600.0" BorderPane.alignment="CENTER">
@@ -77,7 +78,7 @@
     </bottom>
     <center>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="TOP_LEFT">
-            <Canvas fx:id="paintingArea" height="800.0" onMouseClicked="#canvasClicked" width="1600.0" />
+            <ResizablePaintingArea fx:id="paintingArea" onMouseClicked="#canvasClicked" />
             <TitledPane fx:id="chatApplication" alignment="TOP_LEFT" onMouseClicked="#openCloseChat" prefHeight="390" prefWidth="250.0" text="Chat" visible="false" wrapText="true">
                 <VBox prefHeight="200.0" prefWidth="150.0">
                     <ListView fx:id="chatWindow" editable="true" prefHeight="336.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
