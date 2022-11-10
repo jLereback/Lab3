@@ -29,10 +29,11 @@ public class Model {
     private final ObjectProperty<Color> color;
     private final ObjectProperty<ShapeType> shapeType;
     private final StringProperty chatInput;
+    private final BooleanProperty chatButton;
     private final ObservableList<String> chatList;
     private final BooleanProperty chatExpanded;
-    private final DoubleProperty paintingAreaHeight;
-    private final DoubleProperty paintingAreaWidth;
+    private final DoubleProperty canvasHeight;
+    private final DoubleProperty canvasWidth;
 
 
 
@@ -40,9 +41,10 @@ public class Model {
         this.chatExpanded = new SimpleBooleanProperty(true);
         this.chatList = FXCollections.observableArrayList();
         this.chatInput = new SimpleStringProperty();
+        this.chatButton = new SimpleBooleanProperty(true);
         this.serverConnected = new SimpleBooleanProperty();
-        this.paintingAreaHeight = new SimpleDoubleProperty();
-        this.paintingAreaWidth = new SimpleDoubleProperty();
+        this.canvasHeight = new SimpleDoubleProperty();
+        this.canvasWidth = new SimpleDoubleProperty();
         this.undoVisible = new SimpleBooleanProperty(true);
         this.redoVisible = new SimpleBooleanProperty(true);
         this.eraser = new SimpleBooleanProperty(false);
@@ -56,28 +58,46 @@ public class Model {
         this.shapeType = new SimpleObjectProperty<>(CIRCLE);
     }
 
-    public double getPaintingAreaWidth() {
-        return paintingAreaWidth.get();
+    public void setChatInput(String chatInput) {
+        this.chatInput.set(chatInput);
     }
 
-    public DoubleProperty paintingAreaWidthProperty() {
-        return paintingAreaWidth;
+
+
+    public boolean getChatButton() {
+        return chatButton.get();
     }
 
-    public void setPaintingAreaWidth(double paintingAreaWidth) {
-        this.paintingAreaWidth.set(paintingAreaWidth);
+    public BooleanProperty chatButtonProperty() {
+        return chatButton;
     }
 
-    public double getPaintingAreaHeight() {
-        return paintingAreaHeight.get();
+    public void setChatButton(boolean chatButton) {
+        this.chatButton.set(chatButton);
     }
 
-    public DoubleProperty paintingAreaHeightProperty() {
-        return paintingAreaHeight;
+    public double getCanvasWidth() {
+        return canvasWidth.get();
     }
 
-    public void setPaintingAreaHeight(double paintingAreaHeight) {
-        this.paintingAreaHeight.set(paintingAreaHeight);
+    public DoubleProperty canvasWidthProperty() {
+        return canvasWidth;
+    }
+
+    public void setCanvasWidth(double canvasWidth) {
+        this.canvasWidth.set(canvasWidth);
+    }
+
+    public double getCanvasHeight() {
+        return canvasHeight.get();
+    }
+
+    public DoubleProperty canvasHeightProperty() {
+        return canvasHeight;
+    }
+
+    public void setCanvasHeight(double canvasHeight) {
+        this.canvasHeight.set(canvasHeight);
     }
 
     public boolean isChatExpanded() {

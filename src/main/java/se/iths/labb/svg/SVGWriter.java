@@ -54,8 +54,8 @@ public class SVGWriter {
     }
 
     private static void addInitiateString(Model model, List<String> strings) {
-        strings.add("<svg width=\"" + model.getPaintingAreaWidth() +
-                ".0\" height=\"" + model.getPaintingAreaHeight() +
+        strings.add("<svg width=\"" + model.getCanvasWidth() +
+                ".0\" height=\"" + model.getCanvasHeight() +
                 "\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">");
     }
 

@@ -23,8 +23,8 @@ public class Controller {
     static final KeyCombination EXIT = new KeyCodeCombination(KeyCode.E, ALT_DOWN);
 
     static final Color BACKGROUND_COLOR = Color.web("#edece0");
-    static final int MAX_WIDTH = 2000;
-    static final int MAX_HEIGHT = 1000;
+    static final int MAX_WIDTH = 3000;
+    static final int MAX_HEIGHT = 2000;
 
     Model model = new Model();
 
@@ -44,6 +44,7 @@ public class Controller {
     public CheckMenuItem viewUndo;
     public ToggleGroup equipment;
     public Button chatSendButton;
+    public AnchorPane anchorPane;
     public Label connectedLabel;
     public Canvas paintingArea;
     public ToggleButton eraser;
@@ -54,13 +55,12 @@ public class Controller {
     public MenuItem menuSave;
     public MenuItem menuRedo;
     public MenuItem menuExit;
-    public AnchorPane anchorPane;
 
     public void initialize() {
 
         context = paintingArea.getGraphicsContext2D();
-        paintingArea.widthProperty().bindBidirectional(model.paintingAreaWidthProperty());
-        paintingArea.heightProperty().bindBidirectional(model.paintingAreaHeightProperty());
+        paintingArea.widthProperty().bindBidirectional(model.canvasWidthProperty());
+        paintingArea.heightProperty().bindBidirectional(model.canvasHeightProperty());
 
         paintingArea.widthProperty().addListener(observable -> draw());
         paintingArea.heightProperty().addListener(observable -> draw());
@@ -70,6 +70,8 @@ public class Controller {
 
 
         chatApplication.expandedProperty().bindBidirectional(model.chatExpandedProperty());
+
+        chatApplication.expandedProperty().addListener(observable -> openCloseChat());
 
 
         connectToServer.selectedProperty().bindBidirectional(model.serverConnectedProperty());
@@ -84,13 +86,15 @@ public class Controller {
 
         chatApplication.visibleProperty().bind(model.serverConnectedProperty());
 
+        chatSendButton.disableProperty().bindBidirectional(model.chatButtonProperty());
         chatInputField.textProperty().bindBidirectional(model.chatInputProperty());
+
+        model.chatInputProperty().addListener(observable -> model.setChatButton(model.getChatInput().isBlank()));
+
         chatWindow.setItems(model.getChatList());
 
         brush.selectedProperty().bindBidirectional(model.brushProperty());
         eraser.selectedProperty().bindBidirectional(model.eraserProperty());
-
-        chatSendButton.disableProperty().bind(model.chatInputProperty().isEmpty());
 
 
         colorPicker.valueProperty().bindBidirectional(model.colorProperty());
@@ -101,6 +105,7 @@ public class Controller {
         sizeSpinner.getValueFactory().valueProperty().bindBidirectional(model.sizeProperty());
 
         model.getShapeList().addListener((ListChangeListener<Shape>) onChange -> draw());
+
 
         menuRedo.setAccelerator(REDO);
         menuUndo.setAccelerator(UNDO);
@@ -223,20 +228,22 @@ public class Controller {
     }
 
     public void sendMessage() {
-        model.getServer().sendMessage(model.getChatInput());
+        if (chatInputField.getText() == null || chatInputField.getText().isBlank())
+            return;
+        else
+            model.getServer().sendMessage(model.getChatInput());
         chatInputField.clear();
     }
 
     public void openCloseChat() {
-        if (!model.isChatExpanded()) {
-            model.setChatExpanded(true);
-            chatApplication.setPrefHeight(5);
-            model.setChatExpanded(false);
+        if (model.isChatExpanded()) {
+            DragResizer.makeResizable(chatApplication);
+        } else {
+
+            //model.setChatExpanded(true);
+            //model.setChatExpanded(false);
 
             makeSizeStatic(chatApplication);
-        } else {
-            DragResizer.makeResizable(chatApplication);
-            chatApplication.setPrefHeight(390);
         }
     }
 }
