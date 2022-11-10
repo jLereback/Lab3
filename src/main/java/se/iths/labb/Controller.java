@@ -1,11 +1,11 @@
 package se.iths.labb;
 
 import javafx.collections.ListChangeListener;
-import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import se.iths.labb.shapes.*;
@@ -54,12 +54,19 @@ public class Controller {
     public MenuItem menuSave;
     public MenuItem menuRedo;
     public MenuItem menuExit;
+    public AnchorPane anchorPane;
 
     public void initialize() {
 
         context = paintingArea.getGraphicsContext2D();
-        paintingArea.widthProperty().addListener((observable -> resize()));
+        paintingArea.widthProperty().bindBidirectional(model.paintingAreaWidthProperty());
+        paintingArea.heightProperty().bindBidirectional(model.paintingAreaHeightProperty());
+
+        paintingArea.widthProperty().addListener(observable -> draw());
         paintingArea.heightProperty().addListener(observable -> draw());
+
+        anchorPane.widthProperty().addListener(observable -> draw());
+        anchorPane.heightProperty().addListener(observable -> draw());
 
 
         chatApplication.expandedProperty().bindBidirectional(model.chatExpandedProperty());
@@ -101,11 +108,6 @@ public class Controller {
         menuExit.setAccelerator(EXIT);
 
         preparePaintingArea();
-    }
-
-    private void resize() {
-        //mouseLocation.set(new Point2D((float) event.getScreenX(), (float) event.getScreenY()));
-
     }
 
     public void canvasClicked(MouseEvent mouseEvent) {

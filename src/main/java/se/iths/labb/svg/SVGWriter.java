@@ -2,6 +2,7 @@ package se.iths.labb.svg;
 
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import se.iths.labb.Controller;
 import se.iths.labb.Model;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.util.List;
 
 public class SVGWriter {
     FileChooser fileChooser = new FileChooser();
+    static Controller controller = new Controller();
     Path filePath;
 
     private static final SVGWriter svgWriter = new SVGWriter();
@@ -46,13 +48,15 @@ public class SVGWriter {
     }
 
     private static void addStrings(Model model, List<String> strings) {
-        addInitiateString(strings);
+        addInitiateString(model, strings);
         addAllShapesAsStrings(model, strings);
         addFinalString(strings);
     }
 
-    private static void addInitiateString(List<String> strings) {
-        strings.add("<svg width=\"1540.0\" height=\"740.0\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">");
+    private static void addInitiateString(Model model, List<String> strings) {
+        strings.add("<svg width=\"" + model.getPaintingAreaWidth() +
+                ".0\" height=\"" + model.getPaintingAreaHeight() +
+                "\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">");
     }
 
     private static void addAllShapesAsStrings(Model model, List<String> strings) {

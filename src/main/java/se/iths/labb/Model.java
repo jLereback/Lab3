@@ -31,6 +31,8 @@ public class Model {
     private final StringProperty chatInput;
     private final ObservableList<String> chatList;
     private final BooleanProperty chatExpanded;
+    private final DoubleProperty paintingAreaHeight;
+    private final DoubleProperty paintingAreaWidth;
 
 
 
@@ -39,6 +41,8 @@ public class Model {
         this.chatList = FXCollections.observableArrayList();
         this.chatInput = new SimpleStringProperty();
         this.serverConnected = new SimpleBooleanProperty();
+        this.paintingAreaHeight = new SimpleDoubleProperty();
+        this.paintingAreaWidth = new SimpleDoubleProperty();
         this.undoVisible = new SimpleBooleanProperty(true);
         this.redoVisible = new SimpleBooleanProperty(true);
         this.eraser = new SimpleBooleanProperty(false);
@@ -50,6 +54,30 @@ public class Model {
         this.color = new SimpleObjectProperty<>(Color.web("#44966C"));
         this.size = new SimpleObjectProperty<>(50.0);
         this.shapeType = new SimpleObjectProperty<>(CIRCLE);
+    }
+
+    public double getPaintingAreaWidth() {
+        return paintingAreaWidth.get();
+    }
+
+    public DoubleProperty paintingAreaWidthProperty() {
+        return paintingAreaWidth;
+    }
+
+    public void setPaintingAreaWidth(double paintingAreaWidth) {
+        this.paintingAreaWidth.set(paintingAreaWidth);
+    }
+
+    public double getPaintingAreaHeight() {
+        return paintingAreaHeight.get();
+    }
+
+    public DoubleProperty paintingAreaHeightProperty() {
+        return paintingAreaHeight;
+    }
+
+    public void setPaintingAreaHeight(double paintingAreaHeight) {
+        this.paintingAreaHeight.set(paintingAreaHeight);
     }
 
     public boolean isChatExpanded() {

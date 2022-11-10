@@ -1,96 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckMenuItem?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.ColorPicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.SeparatorMenuItem?>
-<?import javafx.scene.control.Spinner?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.control.ToggleButton?>
-<?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.control.ToolBar?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<?import se.iths.labb.shapes.ResizablePaintingArea?>
-<BorderPane minHeight="300.0" minWidth="350.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="450.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.iths.labb.Controller">
+<?import se.iths.labb.shapes.ResizableCanvas?>
+<BorderPane minHeight="300.0" minWidth="350.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="450.0" prefWidth="550.0"
+            xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="se.iths.labb.Controller">
     <top>
         <VBox prefHeight="52.0" prefWidth="600.0" BorderPane.alignment="CENTER">
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                <MenuBar maxHeight="25.0" minHeight="25.0" prefHeight="25.0" prefWidth="550.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <MenuBar maxHeight="25.0" minHeight="25.0" prefHeight="25.0" prefWidth="550.0"
+                         AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <Menu text="File">
-                        <CheckMenuItem fx:id="connectToServer" onAction="#connectToServer" text="Connected to Server" />
-                        <MenuItem fx:id="menuSave" onAction="#save" text="Save" />
-                        <SeparatorMenuItem />
-                        <MenuItem fx:id="menuExit" onAction="#exit" text="Exit" />
+                        <CheckMenuItem fx:id="connectToServer" onAction="#connectToServer" text="Connected to Server"/>
+                        <MenuItem fx:id="menuSave" onAction="#save" text="Save"/>
+                        <SeparatorMenuItem/>
+                        <MenuItem fx:id="menuExit" onAction="#exit" text="Exit"/>
                     </Menu>
                     <Menu text="Edit">
-                        <MenuItem fx:id="menuUndo" onAction="#undoClicked" text="Undo" />
-                        <MenuItem fx:id="menuRedo" onAction="#redoClicked" text="Redo" />
+                        <MenuItem fx:id="menuUndo" onAction="#undoClicked" text="Undo"/>
+                        <MenuItem fx:id="menuRedo" onAction="#redoClicked" text="Redo"/>
                     </Menu>
                     <Menu text="View">
-                        <CheckMenuItem fx:id="viewUndo" selected="true" text="Show undo" />
-                        <CheckMenuItem fx:id="viewRedo" selected="true" text="Show redo" />
+                        <CheckMenuItem fx:id="viewUndo" selected="true" text="Show undo"/>
+                        <CheckMenuItem fx:id="viewRedo" selected="true" text="Show redo"/>
                     </Menu>
                     <Menu text="Command">
-                        <MenuItem disable="true" text="To change color, hold CTRL and click on specific shape" />
-                        <MenuItem disable="true" text="To change size, hold SHIFT and click on specific shape" />
+                        <MenuItem disable="true" text="To change color, hold CTRL and click on specific shape"/>
+                        <MenuItem disable="true" text="To change size, hold SHIFT and click on specific shape"/>
                     </Menu>
                 </MenuBar>
-                <Label fx:id="connectedLabel" alignment="CENTER" prefHeight="26.0" prefWidth="141.0" text="Connected to server" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <Label fx:id="connectedLabel" alignment="CENTER" prefHeight="26.0" prefWidth="141.0"
+                       text="Connected to server" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                       AnchorPane.topAnchor="0.0">
                     <graphic>
-                        <Separator orientation="VERTICAL" prefHeight="24.0" />
+                        <Separator orientation="VERTICAL" prefHeight="24.0"/>
                     </graphic>
                 </Label>
             </AnchorPane>
             <ToolBar prefHeight="35.0" prefWidth="596.0">
-                <ChoiceBox fx:id="shapeType" prefWidth="100.0" />
-                <ColorPicker fx:id="colorPicker" prefWidth="100.0" />
-                <Spinner fx:id="sizeSpinner" amountToStepBy="2.0" editable="true" max="400.0" min="1.0" prefWidth="75.0" />
+                <ChoiceBox fx:id="shapeType" prefWidth="100.0"/>
+                <ColorPicker fx:id="colorPicker" prefWidth="100.0"/>
+                <Spinner fx:id="sizeSpinner" amountToStepBy="2.0" editable="true" max="400.0" min="1.0"
+                         prefWidth="75.0"/>
                 <ToggleButton fx:id="brush" onAction="#toggleBrush" text="Brush">
-               <toggleGroup>
-                  <ToggleGroup fx:id="equipment" />
-               </toggleGroup></ToggleButton>
-            <ToggleButton fx:id="eraser" onAction="#toggleBrush" text="Eraser" toggleGroup="$equipment" />
-                <Button fx:id="undoButton" onAction="#undoClicked" text="Undo" />
-                <Button fx:id="redoButton" onAction="#redoClicked" text="Redo" />
-            <Button fx:id="resetButton" onAction="#resetClicked" text="Reset" />
+                    <toggleGroup>
+                        <ToggleGroup fx:id="equipment"/>
+                    </toggleGroup>
+                </ToggleButton>
+                <ToggleButton fx:id="eraser" onAction="#toggleBrush" text="Eraser" toggleGroup="$equipment"/>
+                <Button fx:id="undoButton" onAction="#undoClicked" text="Undo"/>
+                <Button fx:id="redoButton" onAction="#redoClicked" text="Redo"/>
+                <Button onAction="#resetClicked" text="Reset"/>
             </ToolBar>
         </VBox>
     </top>
-    <left>
-
-    </left>
-    <bottom>
-        <HBox prefHeight="554.0" prefWidth="1242.0" BorderPane.alignment="CENTER" />
-    </bottom>
     <center>
-        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="TOP_LEFT">
-            <ResizablePaintingArea fx:id="paintingArea" onMouseClicked="#canvasClicked" />
-            <TitledPane fx:id="chatApplication" alignment="TOP_LEFT" onMouseClicked="#openCloseChat" prefHeight="390" prefWidth="250.0" text="Chat" visible="false" wrapText="true">
+        <AnchorPane fx:id="anchorPane" BorderPane.alignment="TOP_LEFT">
+            <ResizableCanvas fx:id="paintingArea" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" BorderPane.alignment="TOP_LEFT" onMouseClicked="#canvasClicked"/>
+            <TitledPane fx:id="chatApplication" alignment="TOP_LEFT" onMouseClicked="#openCloseChat" prefHeight="390"
+                        prefWidth="250.0" text="Chat" visible="false" wrapText="true">
                 <VBox prefHeight="200.0" prefWidth="150.0">
-                    <ListView fx:id="chatWindow" editable="true" prefHeight="336.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                    <ListView fx:id="chatWindow" editable="true" prefHeight="336.0" prefWidth="200.0"
+                              VBox.vgrow="ALWAYS"/>
                     <HBox alignment="BOTTOM_LEFT" prefHeight="59.0" prefWidth="143.0">
-                        <TextField fx:id="chatInputField" minWidth="180.0" onAction="#sendMessage" promptText="Write here..." />
+                        <TextField fx:id="chatInputField" minWidth="180.0" onAction="#sendMessage"
+                                   promptText="Write here..."/>
                         <Button fx:id="chatSendButton" mnemonicParsing="false" onAction="#sendMessage" text="Send">
-                     <HBox.margin>
-                        <Insets left="5.0" />
-                     </HBox.margin></Button>
-                  <VBox.margin>
-                     <Insets top="5.0" />
-                  </VBox.margin>
+                            <HBox.margin>
+                                <Insets left="5.0"/>
+                            </HBox.margin>
+                        </Button>
+                        <VBox.margin>
+                            <Insets top="5.0"/>
+                        </VBox.margin>
                     </HBox>
                 </VBox>
             </TitledPane>

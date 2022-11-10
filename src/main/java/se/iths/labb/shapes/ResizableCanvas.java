@@ -2,7 +2,7 @@ package se.iths.labb.shapes;
 
 import javafx.scene.canvas.Canvas;
 
-public class ResizablePaintingArea extends Canvas {
+public class ResizableCanvas extends Canvas {
 
     @Override
     public boolean isResizable() {

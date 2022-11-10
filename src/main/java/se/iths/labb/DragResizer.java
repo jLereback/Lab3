@@ -16,34 +16,18 @@ import javafx.scene.layout.Region;
 
 @SuppressWarnings("UnnecessaryReturnStatement")
 public class DragResizer {
-
-    /**
-     * The margin (in pixels) around the control that a user can click to resize the region.
-     */
-
     private static final int RESIZE_MARGIN = 6;
-
-    static DragResizer resizer = null;
     private final Region region;
     private boolean draggingEast;
     private boolean draggingSouth;
 
 
     private final ObjectProperty<Point2D> mouseLocation = new SimpleObjectProperty<>();
-
-    /**
-     *
-     */
-
     private DragResizer(Region aRegion) {
         region = aRegion;
     }
-
-    /**
-     *
-     */
     public static void makeResizable(Region region) {
-        resizer = new DragResizer(region);
+        DragResizer resizer = new DragResizer(region);
         region.setOnMousePressed(resizer::mousePressed);
         region.setOnMouseDragged(resizer::mouseDragged);
         region.setOnMouseMoved(resizer::mouseOver);
@@ -57,11 +41,6 @@ public class DragResizer {
         region.setOnMouseReleased(null);
         region.setPrefHeight(5);
     }
-
-    /**
-     * Sets the cursor to the appropriate type.
-     */
-
     protected void mouseOver(MouseEvent event) {
         if (isInDraggableZoneS(event) || draggingSouth) {
             if (isInDraggableZoneE(event) || draggingEast)
@@ -73,11 +52,6 @@ public class DragResizer {
         else
             region.setCursor(Cursor.DEFAULT);
     }
-
-    /**
-     *
-     */
-
     private void mousePressed(MouseEvent event) {
 
         event.consume();
@@ -89,28 +63,12 @@ public class DragResizer {
 
         mouseLocation.set(new Point2D((float) event.getScreenX(), (float) event.getScreenY()));
     }
-
-    /**
-     *
-     */
-
-
     private boolean isInDraggableZoneS(MouseEvent event) {
         return event.getY() > (region.getHeight() - RESIZE_MARGIN);
     }
-
-    /**
-     *
-     */
-
     private boolean isInDraggableZoneE(MouseEvent event) {
         return event.getX() > (region.getWidth() - RESIZE_MARGIN);
     }
-
-    /**
-     *
-     */
-
     private void mouseDragged(MouseEvent event) {
 
         event.consume();
@@ -122,27 +80,12 @@ public class DragResizer {
         if (draggingSouth || draggingEast)
             return;
     }
-
-    /**
-     *
-     */
-
     private void resizeEast(MouseEvent event) {
         region.setMinWidth(Math.min(event.getX(), 500));
     }
-
-    /**
-     *
-     */
-
     private void resizeSouth(MouseEvent event) {
         region.setMinHeight(Math.min(event.getY(), 600));
     }
-
-    /**
-     * Reset
-     */
-
     protected void mouseReleased(MouseEvent event) {
         draggingEast = false;
         draggingSouth = false;
