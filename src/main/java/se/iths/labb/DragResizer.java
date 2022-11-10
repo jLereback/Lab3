@@ -34,7 +34,7 @@ public class DragResizer {
         region.setOnMouseReleased(resizer::mouseReleased);
         region.setPrefHeight(390);
         region.setMinHeight(390);
-        region.setMaxHeight(500);
+        region.setMaxHeight(800);
     }
 
     public static void makeSizeStatic(Region region) {
@@ -89,7 +89,7 @@ public class DragResizer {
         region.setMinWidth(Math.min(event.getX(), 500));
     }
     private void resizeSouth(MouseEvent event) {
-        region.setMinHeight(Math.min(event.getY(), 500));
+        region.setMinHeight(Math.min(event.getY(), 800));
     }
     protected void mouseReleased(MouseEvent event) {
         draggingEast = false;

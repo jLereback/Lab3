@@ -59,6 +59,8 @@ public class Controller {
     public void initialize() {
 
         context = paintingArea.getGraphicsContext2D();
+        DragResizer.makeResizable(chatApplication);
+
         paintingArea.widthProperty().bindBidirectional(model.canvasWidthProperty());
         paintingArea.heightProperty().bindBidirectional(model.canvasHeightProperty());
 
@@ -72,6 +74,8 @@ public class Controller {
         chatApplication.expandedProperty().bindBidirectional(model.chatExpandedProperty());
 
         chatApplication.expandedProperty().addListener(observable -> openCloseChat());
+
+
 
 
         connectToServer.selectedProperty().bindBidirectional(model.serverConnectedProperty());
@@ -239,10 +243,6 @@ public class Controller {
         if (model.isChatExpanded()) {
             DragResizer.makeResizable(chatApplication);
         } else {
-
-            //model.setChatExpanded(true);
-            //model.setChatExpanded(false);
-
             makeSizeStatic(chatApplication);
         }
     }

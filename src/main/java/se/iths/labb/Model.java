@@ -58,16 +58,6 @@ public class Model {
         this.shapeType = new SimpleObjectProperty<>(CIRCLE);
     }
 
-    public void setChatInput(String chatInput) {
-        this.chatInput.set(chatInput);
-    }
-
-
-
-    public boolean getChatButton() {
-        return chatButton.get();
-    }
-
     public BooleanProperty chatButtonProperty() {
         return chatButton;
     }
@@ -83,21 +73,11 @@ public class Model {
     public DoubleProperty canvasWidthProperty() {
         return canvasWidth;
     }
-
-    public void setCanvasWidth(double canvasWidth) {
-        this.canvasWidth.set(canvasWidth);
-    }
-
     public double getCanvasHeight() {
         return canvasHeight.get();
     }
-
     public DoubleProperty canvasHeightProperty() {
         return canvasHeight;
-    }
-
-    public void setCanvasHeight(double canvasHeight) {
-        this.canvasHeight.set(canvasHeight);
     }
 
     public boolean isChatExpanded() {
@@ -106,10 +86,6 @@ public class Model {
 
     public BooleanProperty chatExpandedProperty() {
         return chatExpanded;
-    }
-
-    public void setChatExpanded(boolean chatExpanded) {
-        this.chatExpanded.set(chatExpanded);
     }
 
     public ObservableList<String> getChatList() {

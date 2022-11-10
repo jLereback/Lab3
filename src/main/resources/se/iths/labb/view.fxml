@@ -43,7 +43,7 @@
             <ToolBar prefHeight="35.0" prefWidth="596.0">
                 <ChoiceBox fx:id="shapeType" prefWidth="100.0"/>
                 <ColorPicker fx:id="colorPicker" prefWidth="100.0"/>
-                <Spinner fx:id="sizeSpinner" amountToStepBy="2.0" editable="true" max="400.0" min="1.0"
+                <Spinner fx:id="sizeSpinner" amountToStepBy="2.0" editable="true" max="500.0" min="1.0"
                          prefWidth="75.0"/>
                 <ToggleButton fx:id="brush" onAction="#toggleBrush" text="Brush">
                     <toggleGroup>
@@ -64,8 +64,8 @@
                              onMouseClicked="#canvasClicked"/>
             <TitledPane fx:id="chatApplication" alignment="TOP_LEFT" expanded="#openCloseChat" prefHeight="390"
                         prefWidth="250.0" text="Chat" visible="false" wrapText="true">
-                <VBox prefHeight="300.0" prefWidth="150.0">
-                    <ListView fx:id="chatWindow" HBox.hgrow="ALWAYS"/>
+                <VBox>
+                    <ListView fx:id="chatWindow" VBox.vgrow="ALWAYS"/>
                     <HBox alignment="BOTTOM_LEFT" >
                         <TextField fx:id="chatInputField" HBox.hgrow="ALWAYS" onAction="#sendMessage"
                                    promptText="Write here..."/>

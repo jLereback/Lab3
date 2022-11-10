@@ -2,7 +2,6 @@ package se.iths.labb.svg;
 
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import se.iths.labb.Controller;
 import se.iths.labb.Model;
 
 import java.io.IOException;
@@ -13,7 +12,6 @@ import java.util.List;
 
 public class SVGWriter {
     FileChooser fileChooser = new FileChooser();
-    static Controller controller = new Controller();
     Path filePath;
 
     private static final SVGWriter svgWriter = new SVGWriter();
