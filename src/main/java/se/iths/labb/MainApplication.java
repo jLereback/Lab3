@@ -18,7 +18,7 @@ public class MainApplication extends Application {
         Controller controller = fxmlLoader.getController();
         controller.setStage(stage);
 
-        stage.setTitle("Labb3 Julia Lerebäck Corell!");
+        stage.setTitle("LereLabb3 Julia Lerebäck Corell");
         stage.setScene(scene);
         stage.getIcons().add(new Image(Objects.requireNonNull(MainApplication.class.getResourceAsStream("JavaDuke.png"))));
         stage.show();

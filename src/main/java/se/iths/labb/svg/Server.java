@@ -31,7 +31,7 @@ public class Server {
 
     public void connect(Model model) {
         this.model = model;
-        if (!model.isServerConnected())
+        if (!model.getServerConnect())
             return;
         connectToServer();
     }
@@ -48,7 +48,7 @@ public class Server {
         if (executorService.awaitTermination(10, TimeUnit.MILLISECONDS))
             executorService.shutdown();
         writer.close();
-        model.setServerConnected(false);
+        model.setServerConnect(false);
         System.out.println("Disconnected from Server");
     }
 
@@ -63,18 +63,18 @@ public class Server {
     }
 
     private void initServer() throws IOException {
-        connected.bindBidirectional(model.serverConnectedProperty());
+        connected.bindBidirectional(model.serverConnectProperty());
 
-        socket.set(new Socket("127.0.0.1", 8000));
+        socket.set(new Socket("192.168.50.237", 8000));
         writer = new PrintWriter(socket.get().getOutputStream(), true);
         reader = new BufferedReader(new InputStreamReader(socket.get().getInputStream()));
 
-        model.setServerConnected(true);
+        model.setServerConnect(true);
     }
 
     private void handleClient() {
         try {
-            while (model.isServerConnected()) {
+            while (model.getServerConnect()) {
                 readFromServer();
             }
         } catch (IOException e) {

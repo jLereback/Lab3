@@ -16,24 +16,24 @@ import static se.iths.labb.shapes.ShapeType.*;
 public class Model {
     Server server = new Server();
 
-    private final BooleanProperty serverConnected;
-    private final BooleanProperty undoVisible;
-    private final BooleanProperty redoVisible;
-    private final BooleanProperty brush;
-    private final BooleanProperty eraser;
     private final ObservableList<ShapeType> choiceBoxShapeList;
+    private final ObjectProperty<ShapeType> shapeType;
+    private final ObservableList<String> chatList;
+    private final ObservableList<Shape> shapeList;
     private final Deque<Deque<Shape>> undoDeque;
     private final Deque<Deque<Shape>> redoDeque;
-    private final ObservableList<Shape> shapeList;
+    private final BooleanProperty serverConnect;
+    private final BooleanProperty chatExpanded;
     private final ObjectProperty<Double> size;
     private final ObjectProperty<Color> color;
-    private final ObjectProperty<ShapeType> shapeType;
-    private final StringProperty chatInput;
+    private final BooleanProperty undoVisible;
+    private final BooleanProperty redoVisible;
     private final BooleanProperty chatButton;
-    private final ObservableList<String> chatList;
-    private final BooleanProperty chatExpanded;
     private final DoubleProperty canvasHeight;
     private final DoubleProperty canvasWidth;
+    private final StringProperty chatInput;
+    private final BooleanProperty eraser;
+    private final BooleanProperty brush;
 
 
 
@@ -42,7 +42,7 @@ public class Model {
         this.chatList = FXCollections.observableArrayList();
         this.chatInput = new SimpleStringProperty();
         this.chatButton = new SimpleBooleanProperty(true);
-        this.serverConnected = new SimpleBooleanProperty();
+        this.serverConnect = new SimpleBooleanProperty();
         this.canvasHeight = new SimpleDoubleProperty();
         this.canvasWidth = new SimpleDoubleProperty();
         this.undoVisible = new SimpleBooleanProperty(true);
@@ -189,13 +189,7 @@ public class Model {
         shapeList.addAll(redoDeque.removeLast());
     }
 
-    public ObservableList<Shape> getTempList() {
-        ObservableList<Shape> tempList = FXCollections.observableArrayList();
-        for (Shape shape : shapeList)
-            tempList.add(shape.getShapeDuplicate());
-        return tempList;
-    }
-    public Deque<Shape> getShapeListAsDeque() {
+    public Deque<Shape> getTempList() {
         Deque<Shape> tempList = new ArrayDeque<>();
         for (Shape shape : shapeList)
             tempList.add(shape.getShapeDuplicate());
@@ -203,17 +197,17 @@ public class Model {
     }
 
     public void updateShapeList() {
-        ObservableList<Shape> tempList = getTempList();
+        Deque<Shape> tempList = getTempList();
         shapeList.clear();
         shapeList.addAll(tempList);
     }
 
     public void addToUndoDeque() {
-        undoDeque.addLast(getShapeListAsDeque());
+        undoDeque.addLast(getTempList());
     }
 
     public void addToRedoDeque() {
-        redoDeque.addLast(getShapeListAsDeque());
+        redoDeque.addLast(getTempList());
     }
 
     public void addShapeToList(Shape shape) {
@@ -221,22 +215,22 @@ public class Model {
     }
 
     public void sendToList(Shape shape) {
-        if (isServerConnected())
+        if (getServerConnect())
             server.addShapeToServer(shape);
         else
             addShapeToList(shape);
     }
 
-    public BooleanProperty serverConnectedProperty() {
-        return serverConnected;
+    public BooleanProperty serverConnectProperty() {
+        return serverConnect;
     }
 
-    public boolean isServerConnected() {
-        return serverConnected.get();
+    public boolean getServerConnect() {
+        return serverConnect.get();
     }
 
-    public void setServerConnected(boolean serverConnected) {
-        this.serverConnected.set(serverConnected);
+    public void setServerConnect(boolean serverConnect) {
+        this.serverConnect.set(serverConnect);
     }
 
     public void connectToServer() {

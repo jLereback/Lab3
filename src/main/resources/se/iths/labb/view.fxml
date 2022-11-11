@@ -14,7 +14,7 @@
                 <MenuBar maxHeight="25.0" minHeight="25.0" prefHeight="25.0" prefWidth="550.0"
                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <Menu text="File">
-                        <CheckMenuItem fx:id="connectToServer" onAction="#connectToServer" text="Connected to Server"/>
+                        <CheckMenuItem fx:id="connectToServer" onAction="#connectToServer" text="Connect to Server"/>
                         <MenuItem fx:id="menuSave" onAction="#save" text="Save"/>
                         <SeparatorMenuItem/>
                         <MenuItem fx:id="menuExit" onAction="#exit" text="Exit"/>
@@ -50,7 +50,7 @@
                         <ToggleGroup fx:id="equipment"/>
                     </toggleGroup>
                 </ToggleButton>
-                <ToggleButton fx:id="eraser" onAction="#toggleBrush" text="Eraser" toggleGroup="$equipment"/>
+                <ToggleButton fx:id="eraser" onAction="#toggleEraser" text="Eraser" toggleGroup="$equipment"/>
                 <Button fx:id="undoButton" onAction="#undoClicked" text="Undo"/>
                 <Button fx:id="redoButton" onAction="#redoClicked" text="Redo"/>
                 <Button onAction="#resetClicked" text="Reset"/>
@@ -58,7 +58,7 @@
         </VBox>
     </top>
     <center>
-        <AnchorPane fx:id="anchorPane" BorderPane.alignment="TOP_LEFT">
+        <AnchorPane BorderPane.alignment="TOP_LEFT">
             <ResizableCanvas fx:id="paintingArea" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0"
                              AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" BorderPane.alignment="TOP_LEFT"
                              onMouseClicked="#canvasClicked"/>

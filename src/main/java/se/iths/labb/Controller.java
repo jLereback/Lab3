@@ -5,7 +5,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import se.iths.labb.shapes.*;
@@ -21,11 +20,7 @@ public class Controller {
     static final KeyCombination UNDO = new KeyCodeCombination(KeyCode.Z, CONTROL_DOWN);
     static final KeyCombination REDO = new KeyCodeCombination(KeyCode.Y, CONTROL_DOWN);
     static final KeyCombination EXIT = new KeyCodeCombination(KeyCode.E, ALT_DOWN);
-
     static final Color BACKGROUND_COLOR = Color.web("#edece0");
-    static final int MAX_WIDTH = 3000;
-    static final int MAX_HEIGHT = 2000;
-
     Model model = new Model();
 
     ShapeFactory shapeFactory = new ShapeFactory();
@@ -44,7 +39,6 @@ public class Controller {
     public CheckMenuItem viewUndo;
     public ToggleGroup equipment;
     public Button chatSendButton;
-    public AnchorPane anchorPane;
     public Label connectedLabel;
     public Canvas paintingArea;
     public ToggleButton eraser;
@@ -57,50 +51,27 @@ public class Controller {
     public MenuItem menuExit;
 
     public void initialize() {
+        initPaintingArea();
+        initShape();
+        initButtons();
+        initServer();
+        initMenu();
+        initChat();
 
+        preparePaintingArea();
+    }
+
+    private void initPaintingArea() {
         context = paintingArea.getGraphicsContext2D();
-        DragResizer.makeResizable(chatApplication);
 
         paintingArea.widthProperty().bindBidirectional(model.canvasWidthProperty());
         paintingArea.heightProperty().bindBidirectional(model.canvasHeightProperty());
 
         paintingArea.widthProperty().addListener(observable -> draw());
         paintingArea.heightProperty().addListener(observable -> draw());
+    }
 
-        anchorPane.widthProperty().addListener(observable -> draw());
-        anchorPane.heightProperty().addListener(observable -> draw());
-
-
-        chatApplication.expandedProperty().bindBidirectional(model.chatExpandedProperty());
-
-        chatApplication.expandedProperty().addListener(observable -> openCloseChat());
-
-
-
-
-        connectToServer.selectedProperty().bindBidirectional(model.serverConnectedProperty());
-        connectedLabel.visibleProperty().bind(model.serverConnectedProperty());
-
-        viewUndo.selectedProperty().bindBidirectional(model.undoVisibleProperty());
-        undoButton.visibleProperty().bind(model.undoVisibleProperty());
-
-        viewRedo.selectedProperty().bindBidirectional(model.redoVisibleProperty());
-        redoButton.visibleProperty().bind(model.redoVisibleProperty());
-
-
-        chatApplication.visibleProperty().bind(model.serverConnectedProperty());
-
-        chatSendButton.disableProperty().bindBidirectional(model.chatButtonProperty());
-        chatInputField.textProperty().bindBidirectional(model.chatInputProperty());
-
-        model.chatInputProperty().addListener(observable -> model.setChatButton(model.getChatInput().isBlank()));
-
-        chatWindow.setItems(model.getChatList());
-
-        brush.selectedProperty().bindBidirectional(model.brushProperty());
-        eraser.selectedProperty().bindBidirectional(model.eraserProperty());
-
-
+    private void initShape() {
         colorPicker.valueProperty().bindBidirectional(model.colorProperty());
 
         shapeType.valueProperty().bindBidirectional(model.shapeTypeProperty());
@@ -109,20 +80,48 @@ public class Controller {
         sizeSpinner.getValueFactory().valueProperty().bindBidirectional(model.sizeProperty());
 
         model.getShapeList().addListener((ListChangeListener<Shape>) onChange -> draw());
+    }
 
+    private void initButtons() {
+        viewUndo.selectedProperty().bindBidirectional(model.undoVisibleProperty());
+        undoButton.visibleProperty().bind(model.undoVisibleProperty());
 
+        viewRedo.selectedProperty().bindBidirectional(model.redoVisibleProperty());
+        redoButton.visibleProperty().bind(model.redoVisibleProperty());
+
+        brush.selectedProperty().bindBidirectional(model.brushProperty());
+        eraser.selectedProperty().bindBidirectional(model.eraserProperty());
+    }
+
+    private void initServer() {
+        connectToServer.selectedProperty().bindBidirectional(model.serverConnectProperty());
+        connectedLabel.visibleProperty().bind(model.serverConnectProperty());
+    }
+
+    private void initMenu() {
         menuRedo.setAccelerator(REDO);
         menuUndo.setAccelerator(UNDO);
         menuSave.setAccelerator(SAVE);
         menuExit.setAccelerator(EXIT);
+    }
 
-        preparePaintingArea();
+    private void initChat() {
+        DragResizer.makeResizable(chatApplication);
+        chatApplication.expandedProperty().bindBidirectional(model.chatExpandedProperty());
+
+        chatApplication.expandedProperty().addListener(observable -> openCloseChat());
+        chatApplication.visibleProperty().bind(model.serverConnectProperty());
+
+        chatSendButton.disableProperty().bindBidirectional(model.chatButtonProperty());
+        chatInputField.textProperty().bindBidirectional(model.chatInputProperty());
+        model.chatInputProperty().addListener(observable -> model.setChatButton(model.getChatInput().isBlank()));
+
+        chatWindow.setItems(model.getChatList());
+
     }
 
     public void canvasClicked(MouseEvent mouseEvent) {
-        if (model.isEraser())
-            erase(mouseEvent);
-        else if (mouseEvent.isControlDown() && mouseEvent.isShiftDown())
+        if (mouseEvent.isControlDown() && mouseEvent.isShiftDown())
             updateShape(mouseEvent);
         else if (mouseEvent.isControlDown())
             updateColor(mouseEvent);
@@ -134,6 +133,8 @@ public class Controller {
     }
 
     private void erase(MouseEvent mouseEvent) {
+        if (findShape(mouseEvent).isEmpty())
+            return;
         model.addToUndoDeque();
         findShape(mouseEvent).ifPresent(shape -> model.getShapeList().remove(shape));
     }
@@ -156,7 +157,7 @@ public class Controller {
 
     private void preparePaintingArea() {
         context.setFill(BACKGROUND_COLOR);
-        context.fillRect(0, 0, MAX_WIDTH, MAX_HEIGHT);
+        context.fillRect(0, 0, paintingArea.getWidth(), paintingArea.getWidth());
     }
 
     public void undoClicked() {
@@ -231,6 +232,16 @@ public class Controller {
             paintingArea.setOnMouseDragged(null);
     }
 
+    public void toggleEraser() {
+        if (model.isEraser()) {
+            paintingArea.setOnMouseDragged(this::erase);
+            paintingArea.setOnMouseClicked(this::erase);
+        }
+        else {
+            paintingArea.setOnMouseDragged(null);
+            paintingArea.setOnMouseClicked(this::canvasClicked);
+        }
+    }
     public void sendMessage() {
         if (chatInputField.getText() == null || chatInputField.getText().isBlank())
             return;
