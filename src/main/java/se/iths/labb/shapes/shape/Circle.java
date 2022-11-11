@@ -4,6 +4,8 @@ import javafx.scene.canvas.GraphicsContext;
 import se.iths.labb.shapes.ShapeParameter;
 import se.iths.labb.shapes.ShapeType;
 
+import java.util.Locale;
+
 import static se.iths.labb.shapes.ShapeType.*;
 
 public final class Circle extends Shape {
@@ -41,8 +43,8 @@ public final class Circle extends Shape {
 
     @Override
     public String toString() {
-        return "<circle cx=\"" + getX() + "\" " +
-                "cy=\"" + getY() + "\" " +
+        return "<circle cx=\"" + String.format(Locale.UK,"%.2f",getX()) + "\" " +
+                "cy=\"" + String.format(Locale.UK,"%.2f",getY()) + "\" " +
                 "r=\"" + radius + "\" " +
                 "fill=\"#" + colorAsString + "\" />";
     }

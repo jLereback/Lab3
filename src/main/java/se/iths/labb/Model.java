@@ -216,7 +216,7 @@ public class Model {
 
     public void sendToList(Shape shape) {
         if (getServerConnect())
-            server.addShapeToServer(shape);
+            server.addShapeToServer();
         else
             addShapeToList(shape);
     }

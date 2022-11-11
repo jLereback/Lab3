@@ -122,14 +122,21 @@ public class Controller {
     }
 
     public void canvasClicked(MouseEvent mouseEvent) {
+/*        if (mouseEvent.isControlDown() || mouseEvent.isShiftDown())
+            shapeClicked(mouseEvent);
+        else*/
+            createNewShape(mouseEvent);
+        model.getRedoDeque().clear();
+    }
+
+    public void shapeClicked(MouseEvent mouseEvent) {
         if (mouseEvent.isControlDown() && mouseEvent.isShiftDown())
             updateShape(mouseEvent);
         else if (mouseEvent.isControlDown())
             updateColor(mouseEvent);
         else if (mouseEvent.isShiftDown())
             updateSize(mouseEvent);
-        else
-            createNewShape(mouseEvent);
+        else return;
         model.getRedoDeque().clear();
     }
 
@@ -227,22 +234,24 @@ public class Controller {
     }
 
     public void toggleBrush() {
-        if (model.isBrush())
+        if (model.isBrush()) {
             paintingArea.setOnMouseDragged(this::createNewShape);
+            paintingArea.setOnMouseClicked(this::canvasClicked);
+        }
         else
-            paintingArea.setOnMouseDragged(null);
+            paintingArea.setOnMouseDragged(this::shapeClicked);
     }
-
     public void toggleEraser() {
         if (model.isEraser()) {
             paintingArea.setOnMouseDragged(this::erase);
             paintingArea.setOnMouseClicked(this::erase);
         }
         else {
-            paintingArea.setOnMouseDragged(null);
+            paintingArea.setOnMouseDragged(this::shapeClicked);
             paintingArea.setOnMouseClicked(this::canvasClicked);
         }
     }
+
     public void sendMessage() {
         if (chatInputField.getText() == null || chatInputField.getText().isBlank())
             return;

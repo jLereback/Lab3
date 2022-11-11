@@ -61,7 +61,7 @@
         <AnchorPane BorderPane.alignment="TOP_LEFT">
             <ResizableCanvas fx:id="paintingArea" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0"
                              AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" BorderPane.alignment="TOP_LEFT"
-                             onMouseClicked="#canvasClicked"/>
+                             onMouseClicked="#canvasClicked" onMouseDragged="#shapeClicked"/>
             <TitledPane fx:id="chatApplication" alignment="TOP_LEFT" expanded="#openCloseChat" prefHeight="390"
                         prefWidth="250.0" text="Chat" visible="false" wrapText="true">
                 <VBox>

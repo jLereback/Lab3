@@ -4,6 +4,8 @@ import javafx.scene.canvas.GraphicsContext;
 import se.iths.labb.shapes.ShapeParameter;
 import se.iths.labb.shapes.ShapeType;
 
+import java.util.Locale;
+
 import static se.iths.labb.shapes.ShapeType.*;
 
 public final class Square extends Shape {
@@ -39,8 +41,8 @@ public final class Square extends Shape {
 
     @Override
     public String toString() {
-        return "<rect x=\"" + (getX() - halfSideSize) + "\" " +
-                "y=\"" + (getY() - halfSideSize) + "\" " +
+        return "<rect x=\"" + String.format(Locale.UK,"%.2f",(getX() - halfSideSize)) + "\" " +
+                "y=\"" + String.format(Locale.UK, "%.2f", (getY() - halfSideSize)) + "\" " +
                 "width=\"" + getSize() + "\" " +
                 "height=\"" + getSize() + "\" " +
                 "fill=\"#" + colorAsString + "\" />";
