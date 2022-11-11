@@ -43,7 +43,7 @@
             <ToolBar prefHeight="35.0" prefWidth="596.0">
                 <ChoiceBox fx:id="shapeType" prefWidth="100.0"/>
                 <ColorPicker fx:id="colorPicker" prefWidth="100.0"/>
-                <Spinner fx:id="sizeSpinner" amountToStepBy="2.0" editable="true" max="500.0" min="1.0"
+                <Spinner fx:id="sizeSpinner" amountToStepBy="2.0" editable="true" max="500.0" min="2.0"
                          prefWidth="75.0"/>
                 <ToggleButton fx:id="brush" onAction="#toggleBrush" text="Brush">
                     <toggleGroup>
