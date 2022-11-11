@@ -1,7 +1,9 @@
-package se.iths.labb.shapes;
+package se.iths.labb.shapes.shape;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import se.iths.labb.shapes.ShapeParameter;
+import se.iths.labb.shapes.ShapeType;
 
 public abstract class Shape {
     private final double posX;

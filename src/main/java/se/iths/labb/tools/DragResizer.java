@@ -1,4 +1,4 @@
-package se.iths.labb;
+package se.iths.labb.tools;
 
 import javafx.geometry.Point2D;
 import javafx.beans.property.ObjectProperty;

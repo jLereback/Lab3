@@ -1,6 +1,9 @@
 package se.iths.labb.shapes;
 
 import javafx.scene.paint.Color;
+import se.iths.labb.shapes.shape.Circle;
+import se.iths.labb.shapes.shape.Shape;
+import se.iths.labb.shapes.shape.Square;
 
 import java.util.Arrays;
 import java.util.List;

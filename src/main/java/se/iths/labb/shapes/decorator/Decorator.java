@@ -1,7 +1,7 @@
 package se.iths.labb.shapes.decorator;
 
 import javafx.scene.canvas.GraphicsContext;
-import se.iths.labb.shapes.Shape;
+import se.iths.labb.shapes.shape.Shape;
 import se.iths.labb.shapes.ShapeParameter;
 import se.iths.labb.shapes.ShapeType;
 

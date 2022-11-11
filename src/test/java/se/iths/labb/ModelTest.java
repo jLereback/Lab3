@@ -4,6 +4,9 @@ import javafx.scene.paint.Color;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import se.iths.labb.shapes.*;
+import se.iths.labb.shapes.shape.Circle;
+import se.iths.labb.shapes.shape.Shape;
+import se.iths.labb.shapes.shape.Square;
 
 import static org.junit.jupiter.api.Assertions.*;
 

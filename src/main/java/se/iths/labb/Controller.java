@@ -8,12 +8,14 @@ import javafx.scene.input.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import se.iths.labb.shapes.*;
+import se.iths.labb.shapes.shape.Shape;
+import se.iths.labb.tools.DragResizer;
 
 import java.util.Optional;
 
 import static javafx.scene.input.KeyCombination.*;
-import static se.iths.labb.DragResizer.*;
-import static se.iths.labb.svg.SVGWriter.getSVGWriter;
+import static se.iths.labb.tools.DragResizer.*;
+import static se.iths.labb.tools.SVGWriter.getSVGWriter;
 
 public class Controller {
     static final KeyCombination SAVE = new KeyCodeCombination(KeyCode.S, CONTROL_DOWN);

@@ -1,4 +1,4 @@
-package se.iths.labb.shapes;
+package se.iths.labb.tools;
 
 import javafx.scene.canvas.Canvas;
 

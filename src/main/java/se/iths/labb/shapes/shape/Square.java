@@ -1,6 +1,8 @@
-package se.iths.labb.shapes;
+package se.iths.labb.shapes.shape;
 
 import javafx.scene.canvas.GraphicsContext;
+import se.iths.labb.shapes.ShapeParameter;
+import se.iths.labb.shapes.ShapeType;
 
 import static se.iths.labb.shapes.ShapeType.*;
 

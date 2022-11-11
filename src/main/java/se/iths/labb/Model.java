@@ -4,9 +4,9 @@ import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
-import se.iths.labb.shapes.Shape;
+import se.iths.labb.shapes.shape.Shape;
 import se.iths.labb.shapes.ShapeType;
-import se.iths.labb.svg.Server;
+import se.iths.labb.tools.Server;
 
 import java.util.ArrayDeque;
 import java.util.Deque;

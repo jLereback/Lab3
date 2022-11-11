@@ -1,11 +1,11 @@
-package se.iths.labb.svg;
+package se.iths.labb.tools;
 
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import se.iths.labb.Model;
-import se.iths.labb.shapes.*;
 import se.iths.labb.shapes.ShapeFactory;
+import se.iths.labb.shapes.shape.Shape;
 
 import java.io.BufferedReader;
 import java.io.IOException;

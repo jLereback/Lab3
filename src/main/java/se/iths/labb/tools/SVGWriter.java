@@ -1,4 +1,4 @@
-package se.iths.labb.svg;
+package se.iths.labb.tools;
 
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -27,7 +27,7 @@ public class SVGWriter {
 
     private void prepareFileChooser(Stage stage) {
         fileChooser.setInitialFileName("myMasterPiece");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SVG File", "*.svg"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SVG File", "*.tools"));
         filePath = fileChooser.showSaveDialog(stage.getOwner()).toPath();
     }
 
@@ -52,7 +52,7 @@ public class SVGWriter {
     }
 
     private static void addInitiateString(Model model, List<String> strings) {
-        strings.add("<svg width=\"" + model.getCanvasWidth() +
+        strings.add("<tools width=\"" + model.getCanvasWidth() +
                 ".0\" height=\"" + model.getCanvasHeight() +
                 "\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">");
     }
@@ -62,6 +62,6 @@ public class SVGWriter {
     }
 
     private static void addFinalString(List<String> strings) {
-        strings.add("</svg>");
+        strings.add("</tools>");
     }
 }
