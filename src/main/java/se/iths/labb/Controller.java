@@ -117,7 +117,6 @@ public class Controller {
         model.chatInputProperty().addListener(observable -> model.setChatButton(model.getChatInput().isBlank()));
 
         chatWindow.setItems(model.getChatList());
-
     }
 
     public void canvasClicked(MouseEvent mouseEvent) {
@@ -130,13 +129,6 @@ public class Controller {
         else
             createNewShape(mouseEvent);
         model.getRedoDeque().clear();
-    }
-
-    private void erase(MouseEvent mouseEvent) {
-        if (findShape(mouseEvent).isEmpty())
-            return;
-        model.addToUndoDeque();
-        findShape(mouseEvent).ifPresent(shape -> model.getShapeList().remove(shape));
     }
 
     private void createNewShape(MouseEvent mouseEvent) {
@@ -166,6 +158,13 @@ public class Controller {
 
     public void redoClicked() {
         model.redo();
+    }
+
+    private void erase(MouseEvent mouseEvent) {
+        if (findShape(mouseEvent).isEmpty())
+            return;
+        model.addToUndoDeque();
+        findShape(mouseEvent).ifPresent(shape -> model.getShapeList().remove(shape));
     }
 
     public void resetClicked() {
@@ -251,10 +250,9 @@ public class Controller {
     }
 
     public void openCloseChat() {
-        if (model.isChatExpanded()) {
+        if (model.isChatExpanded())
             DragResizer.makeResizable(chatApplication);
-        } else {
+        else
             makeSizeStatic(chatApplication);
-        }
     }
 }
