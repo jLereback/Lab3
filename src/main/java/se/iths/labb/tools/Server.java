@@ -5,6 +5,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import se.iths.labb.Model;
 import se.iths.labb.shapes.ShapeFactory;
+import se.iths.labb.shapes.shape.Shape;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -83,17 +84,15 @@ public class Server {
 
     private void readFromServer() throws IOException {
         String line = reader.readLine();
-        if (line.endsWith("/>")) {
-            model.getShapeList().clear();
+        if (line.endsWith("/>"))
             Platform.runLater(() -> model.addShapeToList(shapeFactory.convertStringToShape(line)));
-        }
         else
             Platform.runLater(() -> model.getChatList().add(line));
     }
 
-    public void addShapeToServer() {
+    public void addShapeToServer(Shape shape) {
         try {
-            model.getShapeList().forEach(shape ->writer.println(shape.toString()));
+            writer.println(shape.toString());
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());
         }

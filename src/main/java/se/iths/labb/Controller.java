@@ -122,9 +122,9 @@ public class Controller {
     }
 
     public void canvasClicked(MouseEvent mouseEvent) {
-/*        if (mouseEvent.isControlDown() || mouseEvent.isShiftDown())
+        if (mouseEvent.isControlDown() || mouseEvent.isShiftDown())
             shapeClicked(mouseEvent);
-        else*/
+        else
             createNewShape(mouseEvent);
         model.getRedoDeque().clear();
     }

@@ -28,7 +28,9 @@ public class SVGWriter {
     private void prepareFileChooser(Stage stage) {
         fileChooser.setInitialFileName("myMasterPiece");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SVG File", "*.svg"));
-        filePath = fileChooser.showSaveDialog(stage.getOwner()).toPath();
+        try {
+            filePath = fileChooser.showSaveDialog(stage.getOwner()).toPath();
+        } catch (NullPointerException ignored) {}
     }
 
     private void writeToSvg(Model model) {
@@ -53,7 +55,7 @@ public class SVGWriter {
 
     private static void addInitiateString(Model model, List<String> strings) {
         strings.add("<svg width=\"" + model.getCanvasWidth() +
-                ".0\" height=\"" + model.getCanvasHeight() +
+                "\" height=\"" + model.getCanvasHeight() +
                 "\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">");
     }
 
